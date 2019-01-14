@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Elvis&#39;s Blogs</title>
+  
+  <subtitle>研一狗的日常</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://vazh.cn/"/>
+  <updated>2019-01-13T14:06:37.860Z</updated>
+  <id>http://vazh.cn/</id>
+  
+  <author>
+    <name>zkstyle</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mybatis</title>
+    <link href="http://vazh.cn/2019/01/13/mybatis/"/>
+    <id>http://vazh.cn/2019/01/13/mybatis/</id>
+    <published>2019-01-13T14:05:58.000Z</published>
+    <updated>2019-01-13T14:06:37.860Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;１.Mybatis介绍&lt;br&gt;MyBatis 本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>hello-world</title>
+    <link href="http://vazh.cn/2019/01/13/hello-world/"/>
+    <id>http://vazh.cn/2019/01/13/hello-world/</id>
+    <published>2019-01-13T13:45:45.000Z</published>
+    <updated>2019-01-13T13:46:13.324Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
