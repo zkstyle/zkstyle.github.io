@@ -130,12 +130,12 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。  示例： 输入：1-&amp;gt;2-&amp;gt;4, 1-&amp;gt;3-&amp;gt;4    输出：1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4  算法思想  定义两个链表 ，链表 flag 是保存结果的新表，带头结点； firstflag 是保存 flag 头节点地址的链表，while循环">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/01/23/Leetcode21-合并两个有序链表/Leetcode21-合并两个有序链表/pic01.png">
-<meta property="og:updated_time" content="2019-01-23T05:10:36.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc21.png">
+<meta property="og:updated_time" content="2019-09-04T02:56:08.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode21-合并两个有序链表">
 <meta name="twitter:description" content="问题描述 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。  示例： 输入：1-&amp;gt;2-&amp;gt;4, 1-&amp;gt;3-&amp;gt;4    输出：1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4  算法思想  定义两个链表 ，链表 flag 是保存结果的新表，带头结点； firstflag 是保存 flag 头节点地址的链表，while循环">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/01/23/Leetcode21-合并两个有序链表/Leetcode21-合并两个有序链表/pic01.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc21.png">
 
 
 
@@ -500,7 +500,7 @@
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeTwoLists</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        ListNode flag = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode firstflag = flag;</span><br><span class="line">        <span class="keyword">while</span> (l1 != <span class="keyword">null</span> &amp;&amp; l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (l1.val &lt; l2.val)&#123;</span><br><span class="line">                flag.next = l1;</span><br><span class="line">                l1 = l1.next;</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                flag.next = l2;</span><br><span class="line">                l2 = l2.next;</span><br><span class="line">            &#125;</span><br><span class="line">            flag = flag.next;</span><br><span class="line">        &#125;</span><br><span class="line">        flag.next = l1 != <span class="keyword">null</span> ? l1 : l2;</span><br><span class="line">        <span class="keyword">return</span> firstflag.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p><strong>时间复杂度：该算法对 L1 L2进行了一次遍历,假设链表L1 L2 成都分别为 r1 r2,则时间复杂度为 O(r1+r2)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h2 id="leetcode-92-Solution"><a href="#leetcode-92-Solution" class="headerlink" title="leetcode 92% Solution"></a>leetcode 92% Solution</h2><h3 id="java执行用时-9ms"><a href="#java执行用时-9ms" class="headerlink" title="java执行用时: 9ms"></a>java执行用时: 9ms</h3><p><img src="Leetcode21-合并两个有序链表/pic01.png" alt="pic02.png"></p>
+<h2 id="leetcode-92-Solution"><a href="#leetcode-92-Solution" class="headerlink" title="leetcode 92% Solution"></a>leetcode 92% Solution</h2><h3 id="java执行用时-9ms"><a href="#java执行用时-9ms" class="headerlink" title="java执行用时: 9ms"></a>java执行用时: 9ms</h3><p><img src="/picture/lc21.png" alt="pic02.png"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -533,7 +533,7 @@
   <p><span>本文标题:</span><a href="/2019/01/23/Leetcode21-合并两个有序链表/">Leetcode21-合并两个有序链表</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年01月23日 - 11:01</p>
-  <p><span>最后更新:</span>2019年01月23日 - 13:01</p>
+  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
   <p><span>原始链接:</span><a href="/2019/01/23/Leetcode21-合并两个有序链表/" title="Leetcode21-合并两个有序链表">https://www.vazh.cn/2019/01/23/Leetcode21-合并两个有序链表/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/01/23/Leetcode21-合并两个有序链表/" aria-label="复制成功！"></i></span>
   </p>
@@ -892,7 +892,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

@@ -130,13 +130,13 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="Description Given a sorted array nums, remove the duplicates in-place such that each element appear only     once and return the new length. Do not allocate extra space for another array, you must do">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/Leetcode26-Remove-Duplicates-from-Sorted-Array/lc26_01.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/Leetcode26-Remove-Duplicates-from-Sorted-Array/lc26_02.png">
-<meta property="og:updated_time" content="2019-03-09T11:12:00.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc26_01.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc26_02.png">
+<meta property="og:updated_time" content="2019-09-04T02:57:19.296Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode26-Remove Duplicates from Sorted Array">
 <meta name="twitter:description" content="Description Given a sorted array nums, remove the duplicates in-place such that each element appear only     once and return the new length. Do not allocate extra space for another array, you must do">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/Leetcode26-Remove-Duplicates-from-Sorted-Array/lc26_01.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc26_01.png">
 
 
 
@@ -520,7 +520,7 @@
 <li>Time complexity : O(n). Simple class.</li>
 <li>Space complexity : O(1).</li>
 </ul>
-<h3 id="Accepted"><a href="#Accepted" class="headerlink" title="Accepted"></a>Accepted</h3><h4 id="Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array."></a>Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array.</h4><h4 id="Memory-Usage-42-MB-less-than-40-27-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Memory-Usage-42-MB-less-than-40-27-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Memory Usage: 42 MB, less than 40.27% of Java online submissions for Remove Duplicates from Sorted Array."></a>Memory Usage: 42 MB, less than 40.27% of Java online submissions for Remove Duplicates from Sorted Array.</h4><p><img src="Leetcode26-Remove-Duplicates-from-Sorted-Array/lc26_01.png" alt="lc26_01"></p>
+<h3 id="Accepted"><a href="#Accepted" class="headerlink" title="Accepted"></a>Accepted</h3><h4 id="Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array."></a>Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array.</h4><h4 id="Memory-Usage-42-MB-less-than-40-27-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Memory-Usage-42-MB-less-than-40-27-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Memory Usage: 42 MB, less than 40.27% of Java online submissions for Remove Duplicates from Sorted Array."></a>Memory Usage: 42 MB, less than 40.27% of Java online submissions for Remove Duplicates from Sorted Array.</h4><p><img src="/picture/lc26_01.png" alt="lc26_01"></p>
 <h2 id="Method-Two"><a href="#Method-Two" class="headerlink" title="Method Two"></a>Method Two</h2><ul>
 <li>Since the array is already sorted, we can keep two pointers <em>i</em> and <em>j</em>, where <em>i</em> is the slow-runner while <em>j</em> is the fast-runner. As long as <em>nums[i] = nums[j]</em>, we increment <em>j</em> to skip the duplicate.</li>
 <li>When we encounter nums[j] !=<em>nums</em>[<em>i</em>], the duplicate run has ended so we must copy its value to nums[i + 1], then incremented and we repeat the same process again until <em>j</em> reaches the end of array.</li>
@@ -530,7 +530,7 @@
 <li><strong>Time complexity</strong> : O(n). Assume that <em>n</em> is the length of array. Each of i<em>i</em> and <em>j</em> traverses at most <em>n</em> steps.</li>
 <li><strong>Space complexity</strong> : O(1).</li>
 </ul>
-<h3 id="Accepted-1"><a href="#Accepted-1" class="headerlink" title="Accepted"></a>Accepted</h3><h4 id="Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array-1"><a href="#Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array-1" class="headerlink" title="Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array."></a>Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array.</h4><h4 id="Memory-Usage-41-5-MB-less-than-56-02-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Memory-Usage-41-5-MB-less-than-56-02-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Memory Usage: 41.5 MB, less than 56.02% of Java online submissions for Remove Duplicates from Sorted Array."></a>Memory Usage: 41.5 MB, less than 56.02% of Java online submissions for Remove Duplicates from Sorted Array.</h4><p><img src="Leetcode26-Remove-Duplicates-from-Sorted-Array/lc26_02.png" alt="lc26_02"></p>
+<h3 id="Accepted-1"><a href="#Accepted-1" class="headerlink" title="Accepted"></a>Accepted</h3><h4 id="Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array-1"><a href="#Runtime-5-ms-faster-than-99-90-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array-1" class="headerlink" title="Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array."></a>Runtime: 5 ms, faster than 99.90% of Java online submissions for Remove Duplicates from Sorted Array.</h4><h4 id="Memory-Usage-41-5-MB-less-than-56-02-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array"><a href="#Memory-Usage-41-5-MB-less-than-56-02-of-Java-online-submissions-for-Remove-Duplicates-from-Sorted-Array" class="headerlink" title="Memory Usage: 41.5 MB, less than 56.02% of Java online submissions for Remove Duplicates from Sorted Array."></a>Memory Usage: 41.5 MB, less than 56.02% of Java online submissions for Remove Duplicates from Sorted Array.</h4><p><img src="/picture/lc26_02.png" alt="lc26_02"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>I am a new comer here. Please give me more advice. If you have a better solution, please feel free to discuss in the comment section. I also hope that you can learn it together with leetcode friends plus V: ZKLOVE9527. (WeChat add friends, please note leetcode).</p>
 
       
@@ -563,7 +563,7 @@
   <p><span>本文标题:</span><a href="/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/">Leetcode26-Remove Duplicates from Sorted Array</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年03月04日 - 15:03</p>
-  <p><span>最后更新:</span>2019年03月09日 - 19:03</p>
+  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
   <p><span>原始链接:</span><a href="/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/" title="Leetcode26-Remove Duplicates from Sorted Array">https://www.vazh.cn/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/03/04/Leetcode26-Remove-Duplicates-from-Sorted-Array/" aria-label="复制成功！"></i></span>
   </p>
@@ -924,7 +924,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

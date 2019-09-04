@@ -130,13 +130,13 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述 给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。 示例 1: 123&amp;gt; 输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5&amp;gt; 输出: 1-&amp;gt;2-&amp;gt;5&amp;gt;   示例 2: 123&amp;gt; 输入: 1-&amp;gt;1-&amp;gt;1-&amp;gt;2-&amp;gt;3&amp;gt; 输出: 2-&amp;gt;3&amp;gt;  算法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/20/Leetcode82-删除排序链表中的重读元素2/Leetcode82-删除排序链表中的重读元素2/lc82_time.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/20/Leetcode82-删除排序链表中的重读元素2/Leetcode82-删除排序链表中的重读元素2/lc82_rank.png">
-<meta property="og:updated_time" content="2019-02-23T08:34:11.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc82_time.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc82_rank.png">
+<meta property="og:updated_time" content="2019-09-04T04:29:51.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode82-删除排序链表中的重读元素2">
 <meta name="twitter:description" content="问题描述 给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。 示例 1: 123&amp;gt; 输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5&amp;gt; 输出: 1-&amp;gt;2-&amp;gt;5&amp;gt;   示例 2: 123&amp;gt; 输入: 1-&amp;gt;1-&amp;gt;1-&amp;gt;2-&amp;gt;3&amp;gt; 输出: 2-&amp;gt;3&amp;gt;  算法">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/02/20/Leetcode82-删除排序链表中的重读元素2/Leetcode82-删除排序链表中的重读元素2/lc82_time.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc82_time.png">
 
 
 
@@ -505,8 +505,8 @@
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">deleteDuplicates</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (head.next != <span class="keyword">null</span> &amp;&amp; head.val == head.next.val) &#123;</span><br><span class="line">            <span class="keyword">while</span> (head.next != <span class="keyword">null</span> &amp;&amp; head.val == head.next.val) &#123;</span><br><span class="line">                head = head.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> deleteDuplicates(head.next);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            head.next = deleteDuplicates(head.next);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p><strong>时间复杂度：该算法对含有 L 个结点的head进行了一次遍历。因此时间复杂度为 O(L)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h2 id="leetcode-98-6-Solution"><a href="#leetcode-98-6-Solution" class="headerlink" title="leetcode 98.6% Solution"></a>leetcode 98.6% Solution</h2><h3 id="java执行用时-1ms"><a href="#java执行用时-1ms" class="headerlink" title="java执行用时: 1ms"></a>java执行用时: 1ms</h3><h3 id="java内存消耗-21-7MB"><a href="#java内存消耗-21-7MB" class="headerlink" title="java内存消耗: 21.7MB"></a>java内存消耗: 21.7MB</h3><p><img src="Leetcode82-删除排序链表中的重读元素2/lc82_time.png" alt="time"></p>
-<p><img src="Leetcode82-删除排序链表中的重读元素2/lc82_rank.png" alt="rank"></p>
+<h2 id="leetcode-98-6-Solution"><a href="#leetcode-98-6-Solution" class="headerlink" title="leetcode 98.6% Solution"></a>leetcode 98.6% Solution</h2><h3 id="java执行用时-1ms"><a href="#java执行用时-1ms" class="headerlink" title="java执行用时: 1ms"></a>java执行用时: 1ms</h3><h3 id="java内存消耗-21-7MB"><a href="#java内存消耗-21-7MB" class="headerlink" title="java内存消耗: 21.7MB"></a>java内存消耗: 21.7MB</h3><p><img src="/picture/lc82_time.png" alt="time"></p>
+<p><img src="/picture/lc82_rank.png" alt="rank"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -539,7 +539,7 @@
   <p><span>本文标题:</span><a href="/2019/02/20/Leetcode82-删除排序链表中的重读元素2/">Leetcode82-删除排序链表中的重读元素2</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年02月20日 - 11:02</p>
-  <p><span>最后更新:</span>2019年02月23日 - 16:02</p>
+  <p><span>最后更新:</span>2019年09月04日 - 12:09</p>
   <p><span>原始链接:</span><a href="/2019/02/20/Leetcode82-删除排序链表中的重读元素2/" title="Leetcode82-删除排序链表中的重读元素2">https://www.vazh.cn/2019/02/20/Leetcode82-删除排序链表中的重读元素2/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/02/20/Leetcode82-删除排序链表中的重读元素2/" aria-label="复制成功！"></i></span>
   </p>
@@ -898,7 +898,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

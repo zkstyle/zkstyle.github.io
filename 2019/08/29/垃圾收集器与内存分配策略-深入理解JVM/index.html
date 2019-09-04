@@ -122,30 +122,30 @@
 
 
 
-<meta name="description" content="最近学习了周志明老师的《深入理解Java虚拟机》，收获颇多，留下一些学习笔记，供以后复习用。  ​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策">
+<meta name="description" content="​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策略   对于GC学习,我们主要考虑三个问题：哪些内存需要回收 -&amp;gt; 什么时候回收 -&amp;g">
 <meta name="keywords" content="JVM,GC,内存分配策略">
 <meta property="og:type" content="article">
 <meta property="og:title" content="垃圾收集器与内存分配策略-深入理解JVM">
 <meta property="og:url" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/index.html">
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
-<meta property="og:description" content="最近学习了周志明老师的《深入理解Java虚拟机》，收获颇多，留下一些学习笔记，供以后复习用。  ​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策">
+<meta property="og:description" content="​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策略   对于GC学习,我们主要考虑三个问题：哪些内存需要回收 -&amp;gt; 什么时候回收 -&amp;g">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc01.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc02.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc03.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc04.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc10.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc11.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc05.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc06.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc07.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc08.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc09.webp">
-<meta property="og:updated_time" content="2019-08-30T10:48:41.142Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc01.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc02.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc03.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc04.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc10.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc11.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc05.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc06.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc07.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc08.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/GC/gc09.webp">
+<meta property="og:updated_time" content="2019-09-04T02:48:56.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="垃圾收集器与内存分配策略-深入理解JVM">
-<meta name="twitter:description" content="最近学习了周志明老师的《深入理解Java虚拟机》，收获颇多，留下一些学习笔记，供以后复习用。  ​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/picture/GC/gc01.webp">
+<meta name="twitter:description" content="​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。  一 学习目标 对象存活判断算法  GC（garbage collection）算法学习  垃圾回收器  内存分配与回收策略   对于GC学习,我们主要考虑三个问题：哪些内存需要回收 -&amp;gt; 什么时候回收 -&amp;g">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/GC/gc01.webp">
 
 
 
@@ -457,7 +457,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  6,912 字
+                  6,875 字
                 </span>
               
 
@@ -494,8 +494,7 @@
       
 
       
-        <p>最近学习了周志明老师的《深入理解Java虚拟机》，收获颇多，留下一些学习笔记，供以后复习用。</p>
-<blockquote>
+        <blockquote>
 <p>​        最近在看周志明老师的《深入理解Java虚拟机》，准备留下一些学习笔记，供以后复习用。以下内容主要来自于《深入理解Java虚拟机》第三章–垃圾收集器与内存分配策略。</p>
 </blockquote>
 <h2 id="一-学习目标"><a href="#一-学习目标" class="headerlink" title="一 学习目标"></a>一 学习目标</h2><ol>
@@ -522,7 +521,7 @@
 <li>缺点：无法解决对象相互引用的问题——会导致对象的引用虽然存在，但是已经不可能再被使用，却无法被回收。</li>
 </ul>
 <h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>通过一系列的称为“GC Roots”的对象作为起始点, 从这些节点开始向下搜索, 搜索走过的路径称为引用链(Reference Chain), 当一个对象到GC Roots不可达(也就是不存在引用链)的时候, 证明对象是不可用的。如下图: <em>Object5、6、7</em> 虽然互有关联, 但它们到GC Roots是不可达的, 因此也会被判定为可回收的对象。（注意：不可达的对象, VM也并不是马上对其回收, 因为要真正宣告一个对象死亡, 至少要经历两次标记）</p>
-<p><img src="picture/GC/gc01.webp" alt="img"></p>
+<p><img src="/picture/GC/gc01.webp" alt="img"></p>
 <p>在Java, 可作为GC Roots的对象包括：</p>
 <ul>
 <li>方法区: 类静态属性引用的对象;</li>
@@ -532,12 +531,12 @@
 </ul>
 <h2 id="四-如何回收-垃圾收集算法"><a href="#四-如何回收-垃圾收集算法" class="headerlink" title="四 如何回收-垃圾收集算法"></a>四 如何回收-垃圾收集算法</h2><h3 id="1-标记清除算法"><a href="#1-标记清除算法" class="headerlink" title="1.标记清除算法"></a>1.标记清除算法</h3><p>  分为标记和清除两个阶段，先标记出需要回收的对象（可达性分析算法或者引用计数算法），在标记完成后统一回收所有被标记的对象。</p>
 <p>  不足之处：效率问题，标记和清除效率都不高。空间问题，标记清除之后会产生大量不连续的内存碎片，空间碎片太多可能会导致以后在程序运行过程中分配较大对象时无法找到足够的连续内存而不得不提前触发另一次垃圾回收动作。</p>
-<p><img src="picture/GC/gc02.webp" alt="img"></p>
+<p><img src="/picture/GC/gc02.webp" alt="img"></p>
 <h3 id="2-复制算法"><a href="#2-复制算法" class="headerlink" title="2.复制算法"></a>2.复制算法</h3><p>  将可用内存划分为大小相等的两块，每次只使用其中的一块。当这块用完了，就将还存活的复制到另一块上，然后将这一块一次性清除。商业虚拟机都是采用该方法来回收新生代，新生代98%都是朝生夕死的。将内存分为较大Eden和两个较小的survivor空间。每次使用其中一块Eden和survivor，回收时将存活的对象一次性地复制到另一块survivor中，再清理掉之前的。HotSpot虚拟机Eden与Survivor默认的大小比例为8:1:1。survivor空间不够时，需要依赖其他内存（老年代）进行分配担保，即让对象进入老年代。</p>
-<p><img src="picture/GC/gc03.webp" alt="img"></p>
+<p><img src="/picture/GC/gc03.webp" alt="img"></p>
 <p>3.标记整理算法</p>
 <p>  复制在对象存活率较高时效率很低。根据老年代的特点提出该算法。标记过程同标记清除一样，但不是直接对可回收对象进行清理，而是让存活对象朝着一端移动，然后直接清理掉端边界外的内存。</p>
-<p><img src="picture/GC/gc04.webp" alt="img"></p>
+<p><img src="/picture/GC/gc04.webp" alt="img"></p>
 <h3 id="4-分代收集算法"><a href="#4-分代收集算法" class="headerlink" title="4.分代收集算法"></a>4.分代收集算法</h3><p>  根据各年代特点分别采用最适当的GC算法。在新生代:中每次垃圾收集都能发现大批对象已死, 只有少量存活. 因此选用复制算法, 只需要付出少量存活对象的复制成本就可以完成收集。在老年代: 因为对象存活率高、没有额外空间对它进行分配担保, 就必须采用<strong>“</strong>标记—清理<strong>”</strong>或<strong>“</strong>标记—整理<strong>”</strong>算法来进行回收, 不必进行内存复制, 且直接腾出空闲内存。即：</p>
 <ul>
 <li>新生代：存活率低，使用复制算法</li>
@@ -563,11 +562,11 @@
 <p>实例数据：用于存储对象中的各种类型的字段信息（包括从父类继承来的）。</p>
 <p>对齐填充：对齐填充不一定存在，起到了占位符的作用，没有特别的含义。</p>
 <p>对象分配如下图所示：</p>
-<p><img src="picture/GC/gc10.png" alt=""></p>
+<p><img src="/picture/GC/gc10.png" alt=""></p>
 <h3 id="HotSpot的对象模型"><a href="#HotSpot的对象模型" class="headerlink" title="HotSpot的对象模型"></a>HotSpot的对象模型</h3><p>HotSpot中采用了OOP-Klass模型，它是用来描述Java对象实例的一种模型，OOP（Ordinary Object Pointer）指的是普通对象指针，而Klass用来描述对象实例的具体类型。</p>
 <p>HotSpot中，用instanceOopDesc 和 arrayOopDesc 来描述对象头，其中arrayOopDesc对象用于描述数组类型。</p>
 <p>通过OOP-Klass模型，我们就知道了Java虚拟机是如何通过栈帧中的对象引用找到对应的对象实例，如下图所示：</p>
-<p><img src="picture/GC/gc11.png" alt=""></p>
+<p><img src="/picture/GC/gc11.png" alt=""></p>
 <p>从图中可以看出，通过栈帧中的对象引用找到Java堆中的instanceOopDesc对象，再通过instanceOopDesc中的元数据指针来找到方法区中的instanceKlass，从而确定该对象的具体类型。</p>
 <h3 id="HotSpot的准确式GC"><a href="#HotSpot的准确式GC" class="headerlink" title="HotSpot的准确式GC"></a>HotSpot的准确式GC</h3><p>HotSpot采用了准确式GC以提升GC roots的枚举速度。所谓准确式GC，就是让JVM知道内存中某位置数据的类型什么。比如当前内存位置中的数据究竟是一个整型变量还是一个引用类型。这样JVM可以很快确定所有引用类型的位置，从而更有针对性的进行GC roots枚举。</p>
 <p>HotSpot是利用OopMap来实现准确式GC的。当类加载完成后，HotSpot 就将对象内存布局之中什么偏移量上数值是一个什么样的类型的数据这些信息存放到 OopMap 中；在 HotSpot 的 JIT 编译过程中，同样会插入相关指令来标明哪些位置存放的是对象引用等，这样在 GC 发生时，HotSpot 就可以直接扫描 OopMap 来获取对象引用的存储位置，从而进行 GC Roots 枚举。</p>
@@ -587,7 +586,7 @@
 <li>新生代：Serial收集器　　ParNew收集器　　Parallel Scavenge收集器</li>
 <li>老年代：Serial Old收集器　　Parallel Old收集器　　CMS收集器</li>
 </ul>
-<p><img src="picture/GC/gc05.webp" alt=""></p>
+<p><img src="/picture/GC/gc05.webp" alt=""></p>
 <h3 id="新生代垃圾收集器"><a href="#新生代垃圾收集器" class="headerlink" title="新生代垃圾收集器"></a>新生代垃圾收集器</h3><h4 id="1-Serial收集器"><a href="#1-Serial收集器" class="headerlink" title="1.Serial收集器"></a>1.Serial收集器</h4><p>  最悠久，最基本的收集器；<strong>单线程</strong>收集器，只使用一个CPU或一条收集线程去完成垃圾收集工作，且在收集时，必须暂停其他所有的工作线程，直到收集结束。<strong>新生代采取复制算法</strong>。老年代采取标记整理算法。在进行垃圾收集时必须暂停其他所有的工作线程，即“Stop The World”。依然是虚拟机运行在Client模式下的默认新生代收集器。Serial一般在单核的机器上使用，是Java 5非服务端JVM的默认收集器。</p>
 <blockquote>
 <ol>
@@ -597,7 +596,7 @@
 </ol>
 <p>优势：对于单CPU环境来说，Serial收集器没有线程交互的开销，专心做垃圾收集可以获得最高的单线程收集。Serial收集器对于在Client模式下的虚拟机是一个很好的选择。 </p>
 </blockquote>
-<p><img src="picture/GC/gc06.webp" alt=""></p>
+<p><img src="/picture/GC/gc06.webp" alt=""></p>
 <h4 id="2-ParNew收集器"><a href="#2-ParNew收集器" class="headerlink" title="2.ParNew收集器"></a>2.ParNew收集器</h4><p>  Serial收集器的多线程版。<strong>多条线程</strong>进行垃圾收集，采用<strong>复制算法</strong>。其余和Serial收集器一样。目前唯一能与CMS收集器配合工作。ParNew收集器在单CPU环境中不比Serial效果好，甚至可能更差，两个CPU也不一定跑的过，但随着CPU数量的增加，性能会逐步增加。默认开启的收集线程数与CPU数量相同。在CPU数量很多的情况下，可以使用-XX:ParallelGCThreads参数来限制线程数。</p>
 <blockquote>
 <ol>
@@ -607,7 +606,7 @@
 </ol>
 <p>优势：ParNew收集器是许多运行在server模式下的虚拟机中首选的新生代收集器，一个重要的原因是，只有ParNew和Serial收集器能和CMS收集器共同工作。无法与JDK1.4中存在的新生代收集器Parallel Scavenge配合工作，所以在JDK1.5中使用CMS来收集老年代的时候，新生代只能选择ParNew和Serial。</p>
 </blockquote>
-<p><img src="picture/GC/gc07.webp" alt=""></p>
+<p><img src="/picture/GC/gc07.webp" alt=""></p>
 <h4 id="3-Parallel-Scavenge收集器"><a href="#3-Parallel-Scavenge收集器" class="headerlink" title="3.Parallel Scavenge收集器"></a>3.Parallel Scavenge收集器</h4><p>  新生代收集器，<strong>多线程并行</strong>、使用<strong>复制算法</strong>。</p>
 <p>  CMS的关注点是尽可能地缩短垃圾收集时用户线程的停顿时间，而PS收集器的目的则是达到一个可控制的吞吐量。吞吐量即CPU用于运行用户代码的时间与CPU总消耗时间的比值（吞吐量=运行用户代码的时间/（运行用户代码的时间+垃圾收集的时间））。</p>
 <blockquote>
@@ -615,7 +614,7 @@
 <p>使用-XX:GCTimeRatio参数控制吞吐量。</p>
 <p>Parallel Scavenge收集器设置-XX:UseAdaptiveSizePolicy参数，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或者最大吞吐量（GC自使用的调节策略）。<br>自适应调节策略也是Parallel Scavenge收集器和ParNew收集器一个重要的区别。</p>
 </blockquote>
-<p><img src="picture/GC/gc08.webp" alt=""></p>
+<p><img src="/picture/GC/gc08.webp" alt=""></p>
 <h3 id="老年代垃圾收集器"><a href="#老年代垃圾收集器" class="headerlink" title="老年代垃圾收集器"></a>老年代垃圾收集器</h3><h4 id="4-Serial-Old收集器"><a href="#4-Serial-Old收集器" class="headerlink" title="4.Serial Old收集器"></a>4.Serial Old收集器</h4><p>  Serial Old同样是<strong>单线程</strong>收集器,使用“<strong>标记-整理</strong>”算法。可以与JDK1.5及之前的Parallel Scavenge搭配使用；也可以作为CMS收集器的后备预案，在并发收集发生Concureent Mode Failure时使用。</p>
 <h4 id="5-Parallel-Old收集器"><a href="#5-Parallel-Old收集器" class="headerlink" title="5.Parallel Old收集器"></a>5.Parallel Old收集器</h4><p>  Parallel Old收集器是<strong>多线程</strong>，使用“<strong>标记-整理</strong>”算法。</p>
 <p>  JDK1.6前，Parallel Scavenge只能与老年代收集器Serial Old（PS MarkSweep）组合，由于Serial Old无法充分利用服务器多CPU的处理能力，会拖累整体性能。</p>
@@ -635,7 +634,7 @@
 <li>CMS收集器<strong>无法处理浮动垃圾（floating garbage）</strong>，可能会出现concurrent mode failure导致另一次full gc的产生。在CMS的并发清理阶段，由于程序还在运行，垃圾还会不断产生，这一部分垃圾出现在标记过程之后，CMS无法在本次收集中处理掉它们，只好留到下一次GC再处理。这种垃圾称为浮动垃圾。同样由于CMS GC阶段用户线程还需要运行，即还需要预留足够的内存空间供用户线程使用，因此CMS收集器不能像其他收集器那样等到老年代几乎完全被灌满了再进行收集而需要预留一部分空间提供并发收集时的程序运作使用。<strong>默认设置下 CMS收集器在老年代使用了68%的空间后就会被激活</strong>。这个值可以用-XX:CMSInitiatingOccupancyFraction来设置。要是CMS运行期间预留的内存无法满足程序需要，就会出现concurrent mode failure，这时候就会启用Serial Old收集器作为备用进行老年代的垃圾收集。</li>
 <li>空间碎片过多（标记-清除算法的弊端），CMS是基于标记-清除算法来实现的回收器，提供-XX:+UseCMSCompactAtFullCollection参数，应用于在FULL GC后再进行一个碎片整理过程。-XX:CMSFullGCsBeforeCompaction,多少次不压缩的full gc后来一次带压缩的。</li>
 </ul>
-<p><img src="picture/GC/gc09.webp" alt=""></p>
+<p><img src="/picture/GC/gc09.webp" alt=""></p>
 <h3 id="整堆收集器"><a href="#整堆收集器" class="headerlink" title="整堆收集器"></a>整堆收集器</h3><h4 id="7-G1收集器"><a href="#7-G1收集器" class="headerlink" title="7.G1收集器"></a>7.G1收集器</h4><p> G1收集器（Garbage-First）：是当今收集器技术发展的最前沿的成果之一，G1是一款面向服务器端应用的垃圾收集器。 使用G1收集器时，java堆的内存布局就与其他收集器有很大差别，它将真个java堆划分为多个大小相等的独立区域（Region），虽然还保留新生代与老年代的概念，但新生代与老年代不再试物理隔离的了，他们都是一部分Region（不需要连续）的集合。G1具备如下特点：</p>
 <ul>
 <li>并行与并发：G1能充分利用多CPU、多核环境下的硬件优势，使用多个CPU（CPU或者CPU核心）来缩短Stop-The-World停顿的时间，部分其他收集器原本需要停顿java线程执行的GC动作，G1收集器仍然可以通过并发的方式让java程序继续执行。</li>
@@ -696,7 +695,7 @@
   <p><span>本文标题:</span><a href="/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/">垃圾收集器与内存分配策略-深入理解JVM</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年08月29日 - 19:08</p>
-  <p><span>最后更新:</span>2019年08月30日 - 18:08</p>
+  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
   <p><span>原始链接:</span><a href="/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/" title="垃圾收集器与内存分配策略-深入理解JVM">https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/08/29/垃圾收集器与内存分配策略-深入理解JVM/" aria-label="复制成功！"></i></span>
   </p>
@@ -786,6 +785,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/Leetcode275-二叉树的所有路径/" rel="prev" title="Leetcode257-二叉树的所有路径">
+                Leetcode257-二叉树的所有路径 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -1055,7 +1058,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

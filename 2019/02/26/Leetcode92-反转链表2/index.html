@@ -130,13 +130,13 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。 说明:    1 ≤ m ≤ n ≤ 链表长度。 示例:  输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, m = 2, n = 4     输出: 1-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;5-&amp;gt;NULL  算法思想  先对head进行判断，如果head或head.next为null,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/26/Leetcode92-反转链表2/Leetcode92-反转链表2/lc92_02.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/26/Leetcode92-反转链表2/Leetcode92-反转链表2/lc92_01.png">
-<meta property="og:updated_time" content="2019-02-27T03:29:52.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc92_02.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc92_01.png">
+<meta property="og:updated_time" content="2019-09-04T04:31:23.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode92-反转链表2">
 <meta name="twitter:description" content="问题描述 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。 说明:    1 ≤ m ≤ n ≤ 链表长度。 示例:  输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, m = 2, n = 4     输出: 1-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;5-&amp;gt;NULL  算法思想  先对head进行判断，如果head或head.next为null,">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/02/26/Leetcode92-反转链表2/Leetcode92-反转链表2/lc92_02.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc92_02.png">
 
 
 
@@ -502,8 +502,8 @@
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 由反转链表得到灵感，将固定的一段链表，m到n的节点进行反转</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> head</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> m</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> n</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseBetween</span><span class="params">(ListNode head, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span> || m == n)&#123;</span><br><span class="line">           <span class="keyword">return</span> head;</span><br><span class="line">       &#125;</span><br><span class="line">       ListNode curr = head;</span><br><span class="line">       ListNode prev = <span class="keyword">null</span>;</span><br><span class="line">       ListNode next = <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">int</span> k = n - m + <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">if</span> (m == <span class="number">1</span>) &#123;</span><br><span class="line">           <span class="keyword">while</span> (k-- != <span class="number">0</span> &amp;&amp; curr != <span class="keyword">null</span>)&#123;</span><br><span class="line">               <span class="keyword">if</span> (curr.next == <span class="keyword">null</span>)&#123;</span><br><span class="line">                   next = <span class="keyword">null</span>;</span><br><span class="line">               &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                   next = curr.next;</span><br><span class="line">               &#125;</span><br><span class="line">               curr.next = prev;</span><br><span class="line">               prev = curr;</span><br><span class="line">               curr = next;</span><br><span class="line">           &#125;</span><br><span class="line">           head.next = curr;</span><br><span class="line">           head = prev;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           head.next = reverseBetween(head.next, m - <span class="number">1</span>, n - <span class="number">1</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> head;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p><strong>时间复杂度：该算法对前 n 个结点进行了一次遍历。因此时间复杂度为 O(m)</strong></p>
 <p><strong>空间复杂度：因为递归调用了m次，故空间复杂度为O(m)</strong></p>
-<h2 id="leetcode-100-Solution"><a href="#leetcode-100-Solution" class="headerlink" title="leetcode 100% Solution"></a>leetcode 100% Solution</h2><h3 id="java执行用时-2ms"><a href="#java执行用时-2ms" class="headerlink" title="java执行用时: 2ms"></a>java执行用时: 2ms</h3><h3 id="java内存消耗-36-7MB"><a href="#java内存消耗-36-7MB" class="headerlink" title="java内存消耗: 36.7MB"></a>java内存消耗: 36.7MB</h3><p><img src="Leetcode92-反转链表2/lc92_02.png" alt="time"></p>
-<p><img src="Leetcode92-反转链表2/lc92_01.png" alt="rank"></p>
+<h2 id="leetcode-100-Solution"><a href="#leetcode-100-Solution" class="headerlink" title="leetcode 100% Solution"></a>leetcode 100% Solution</h2><h3 id="java执行用时-2ms"><a href="#java执行用时-2ms" class="headerlink" title="java执行用时: 2ms"></a>java执行用时: 2ms</h3><h3 id="java内存消耗-36-7MB"><a href="#java内存消耗-36-7MB" class="headerlink" title="java内存消耗: 36.7MB"></a>java内存消耗: 36.7MB</h3><p><img src="/picture/lc92_02.png" alt="time"></p>
+<p><img src="/picture/lc92_01.png" alt="rank"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -536,7 +536,7 @@
   <p><span>本文标题:</span><a href="/2019/02/26/Leetcode92-反转链表2/">Leetcode92-反转链表2</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年02月26日 - 19:02</p>
-  <p><span>最后更新:</span>2019年02月27日 - 11:02</p>
+  <p><span>最后更新:</span>2019年09月04日 - 12:09</p>
   <p><span>原始链接:</span><a href="/2019/02/26/Leetcode92-反转链表2/" title="Leetcode92-反转链表2">https://www.vazh.cn/2019/02/26/Leetcode92-反转链表2/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/02/26/Leetcode92-反转链表2/" aria-label="复制成功！"></i></span>
   </p>
@@ -895,7 +895,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

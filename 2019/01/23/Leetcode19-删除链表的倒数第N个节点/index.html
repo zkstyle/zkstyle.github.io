@@ -130,13 +130,13 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。 示例： 给定一个链表: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5, 和 n = 2. 当删除了倒数第二个节点后，链表变为 1-&amp;gt;2-&amp;gt;3-&amp;gt;5. 说明： 给定的 n 保证是有效的。 进阶： 你能尝试使用一趟扫描实现吗？  算法思想  上述算法可以优化为只使用一次遍历。我们可以使用两个指针而不是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/01/23/Leetcode19-删除链表的倒数第N个节点/Leetcode19-删除链表的倒数第N个节点/pic01.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/01/23/Leetcode19-删除链表的倒数第N个节点/Leetcode19-删除链表的倒数第N个节点/pic02.png">
-<meta property="og:updated_time" content="2019-01-23T02:12:24.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc19_01.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc19_02.png">
+<meta property="og:updated_time" content="2019-09-04T02:55:46.733Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode19-删除链表的倒数第N个节点">
 <meta name="twitter:description" content="问题描述 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。 示例： 给定一个链表: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5, 和 n = 2. 当删除了倒数第二个节点后，链表变为 1-&amp;gt;2-&amp;gt;3-&amp;gt;5. 说明： 给定的 n 保证是有效的。 进阶： 你能尝试使用一趟扫描实现吗？  算法思想  上述算法可以优化为只使用一次遍历。我们可以使用两个指针而不是">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/01/23/Leetcode19-删除链表的倒数第N个节点/Leetcode19-删除链表的倒数第N个节点/pic01.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc19_01.png">
 
 
 
@@ -502,11 +502,11 @@
 </ol>
 </li>
 </ul>
-<h2 id="官方图解"><a href="#官方图解" class="headerlink" title="官方图解"></a>官方图解</h2><p>​                            <img src="Leetcode19-删除链表的倒数第N个节点/pic01.png" alt="pic01.png"></p>
+<h2 id="官方图解"><a href="#官方图解" class="headerlink" title="官方图解"></a>官方图解</h2><p>​                            <img src="/picture/lc19_01.png" alt="pic01.png"></p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">removeNthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">       ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">       dummy.next = head;</span><br><span class="line">       ListNode first = dummy;</span><br><span class="line">       ListNode second = dummy;</span><br><span class="line">       <span class="comment">// Advances first pointer so that the gap between first and second is n nodes apart</span></span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n + <span class="number">1</span>; i++) &#123;</span><br><span class="line">           first = first.next;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// Move first to the end, maintaining the gap</span></span><br><span class="line">       <span class="keyword">while</span> (first != <span class="keyword">null</span>) &#123;</span><br><span class="line">           first = first.next;</span><br><span class="line">           second = second.next;</span><br><span class="line">       &#125;</span><br><span class="line">       second.next = second.next.next;</span><br><span class="line">       <span class="keyword">return</span> dummy.next;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p><strong>时间复杂度：该算法对含有 L<em>L</em> 个结点的列表进行了一次遍历。因此时间复杂度为 O(L)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h2 id="leetcode-98-Solution"><a href="#leetcode-98-Solution" class="headerlink" title="leetcode 98% Solution"></a>leetcode 98% Solution</h2><h3 id="java执行用时-8ms"><a href="#java执行用时-8ms" class="headerlink" title="java执行用时: 8ms"></a>java执行用时: 8ms</h3><p><img src="Leetcode19-删除链表的倒数第N个节点/pic02.png" alt="pic02.png"></p>
+<h2 id="leetcode-98-Solution"><a href="#leetcode-98-Solution" class="headerlink" title="leetcode 98% Solution"></a>leetcode 98% Solution</h2><h3 id="java执行用时-8ms"><a href="#java执行用时-8ms" class="headerlink" title="java执行用时: 8ms"></a>java执行用时: 8ms</h3><p><img src="/picture/lc19_02.png" alt="pic02.png"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -539,7 +539,7 @@
   <p><span>本文标题:</span><a href="/2019/01/23/Leetcode19-删除链表的倒数第N个节点/">Leetcode19-删除链表的倒数第N个节点</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年01月23日 - 09:01</p>
-  <p><span>最后更新:</span>2019年01月23日 - 10:01</p>
+  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
   <p><span>原始链接:</span><a href="/2019/01/23/Leetcode19-删除链表的倒数第N个节点/" title="Leetcode19-删除链表的倒数第N个节点">https://www.vazh.cn/2019/01/23/Leetcode19-删除链表的倒数第N个节点/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/01/23/Leetcode19-删除链表的倒数第N个节点/" aria-label="复制成功！"></i></span>
   </p>
@@ -900,7 +900,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

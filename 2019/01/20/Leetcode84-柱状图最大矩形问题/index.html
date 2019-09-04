@@ -130,13 +130,13 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述​                                      给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。 求在该柱状图中，能够勾勒出来的矩形的最大面积。 以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。 图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。  单调栈首先引入单调">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/01/20/Leetcode84-柱状图最大矩形问题/Leetcode84-柱状图最大矩形问题/pic01.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/01/20/Leetcode84-柱状图最大矩形问题/Leetcode84-柱状图最大矩形问题/pic02.png">
-<meta property="og:updated_time" content="2019-01-22T06:48:48.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc84_01.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc84_02.png">
+<meta property="og:updated_time" content="2019-09-04T04:31:02.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode84-柱状图最大矩形问题">
 <meta name="twitter:description" content="问题描述​                                      给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。 求在该柱状图中，能够勾勒出来的矩形的最大面积。 以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。 图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。  单调栈首先引入单调">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/01/20/Leetcode84-柱状图最大矩形问题/Leetcode84-柱状图最大矩形问题/pic01.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc84_01.png">
 
 
 
@@ -485,7 +485,7 @@
       
 
       
-        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>​                                    <img src="Leetcode84-柱状图最大矩形问题/pic01.png" alt="pic01.png"></p>
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>​                                    <img src="/picture/lc84_01.png" alt="pic01.png"></p>
 <blockquote>
 <p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
 <p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
@@ -538,7 +538,7 @@
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="keyword">int</span>[] heights)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(heights.length == <span class="number">0</span> || heights == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        Stack&lt;Integer&gt; s = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; heights.length; i++)&#123;</span><br><span class="line">            <span class="keyword">while</span>(!s.isEmpty() &amp;&amp; heights[i] &lt;= heights[s.peek()])&#123;</span><br><span class="line">                <span class="keyword">int</span> j = s.pop();</span><br><span class="line">                <span class="keyword">int</span> k = s.isEmpty() ? -<span class="number">1</span> : s.peek();</span><br><span class="line">                <span class="keyword">int</span> curArea = (i - k - <span class="number">1</span>) * heights[j];</span><br><span class="line">                res = Math.max(res, curArea);</span><br><span class="line">            &#125;</span><br><span class="line">            s.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!s.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">int</span> i = s.pop();</span><br><span class="line">            <span class="keyword">int</span> k = s.isEmpty() ? - <span class="number">1</span> : s.peek();</span><br><span class="line">            <span class="keyword">int</span> curArea = (heights.length - k - <span class="number">1</span>) * heights[i];</span><br><span class="line">            res = Math.max(res, curArea);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br></pre></td></tr></table></figure>
 <h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p><strong>时间复杂度：单调栈的维护是 O(n) 级的时间复杂度，因为所有元素只会进入栈一次，并且出栈后再也不会进栈了。因此while循环遍历的次数是线性的，故时间复杂度为O(n)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h2 id="leetcode-83-Solution"><a href="#leetcode-83-Solution" class="headerlink" title="leetcode 83% Solution"></a>leetcode 83% Solution</h2><h3 id="java执行用时-20ms"><a href="#java执行用时-20ms" class="headerlink" title="java执行用时: 20ms"></a>java执行用时: 20ms</h3><p><img src="Leetcode84-柱状图最大矩形问题/pic02.png" alt="pic02.png"></p>
+<h2 id="leetcode-83-Solution"><a href="#leetcode-83-Solution" class="headerlink" title="leetcode 83% Solution"></a>leetcode 83% Solution</h2><h3 id="java执行用时-20ms"><a href="#java执行用时-20ms" class="headerlink" title="java执行用时: 20ms"></a>java执行用时: 20ms</h3><p><img src="/picture/lc84_02.png" alt="pic02.png"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -571,7 +571,7 @@
   <p><span>本文标题:</span><a href="/2019/01/20/Leetcode84-柱状图最大矩形问题/">Leetcode84-柱状图最大矩形问题</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年01月20日 - 16:01</p>
-  <p><span>最后更新:</span>2019年01月22日 - 14:01</p>
+  <p><span>最后更新:</span>2019年09月04日 - 12:09</p>
   <p><span>原始链接:</span><a href="/2019/01/20/Leetcode84-柱状图最大矩形问题/" title="Leetcode84-柱状图最大矩形问题">https://www.vazh.cn/2019/01/20/Leetcode84-柱状图最大矩形问题/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/01/20/Leetcode84-柱状图最大矩形问题/" aria-label="复制成功！"></i></span>
   </p>
@@ -934,7 +934,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

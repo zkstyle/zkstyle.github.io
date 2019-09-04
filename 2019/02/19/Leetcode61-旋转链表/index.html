@@ -130,15 +130,15 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="问题描述 给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。 示例 1: 123456&amp;gt; 输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2&amp;gt; 输出: 4-&amp;gt;5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;NULL&amp;gt; 解释:&amp;gt; 向右旋转 1 步: 5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/Leetcode61-旋转链表/lc61_pic02.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/Leetcode61-旋转链表/lc61_pic01.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/Leetcode61-旋转链表/lc61_time.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/Leetcode61-旋转链表/lc61_rank.png">
-<meta property="og:updated_time" content="2019-02-20T05:36:29.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc61_pic02.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc61_pic01.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc61_time.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/lc61_rank.png">
+<meta property="og:updated_time" content="2019-09-04T04:28:21.491Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode61-旋转链表">
 <meta name="twitter:description" content="问题描述 给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。 示例 1: 123456&amp;gt; 输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2&amp;gt; 输出: 4-&amp;gt;5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;NULL&amp;gt; 解释:&amp;gt; 向右旋转 1 步: 5-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/Leetcode61-旋转链表/lc61_pic02.png">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/lc61_pic02.png">
 
 
 
@@ -508,8 +508,8 @@
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        ListNode headPoint = head;</span><br><span class="line">        <span class="keyword">while</span> (headPoint != <span class="keyword">null</span> &amp;&amp; headPoint.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">            headPoint = headPoint.next;</span><br><span class="line">            len++;</span><br><span class="line">        &#125;</span><br><span class="line">        len++;</span><br><span class="line">        <span class="keyword">int</span> n = k % len;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode flag = head;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (len - n - <span class="number">1</span>); i++) &#123;</span><br><span class="line">            flag = flag.next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode tmp;</span><br><span class="line">        tmp = flag.next;</span><br><span class="line">        flag.next = <span class="keyword">null</span>;</span><br><span class="line">        headPoint.next = head;</span><br><span class="line">        head = tmp;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><p><strong>时间复杂度：该算法对含有 L 个结点的head进行了一次遍历，获取其长度。因此时间复杂度为 O(L)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h3 id="leetcode-90-Solution"><a href="#leetcode-90-Solution" class="headerlink" title="leetcode 90% Solution"></a>leetcode 90% Solution</h3><h4 id="java执行用时-5ms"><a href="#java执行用时-5ms" class="headerlink" title="java执行用时: 5ms"></a>java执行用时: 5ms</h4><h4 id="java内存消耗-27-1MB"><a href="#java内存消耗-27-1MB" class="headerlink" title="java内存消耗: 27.1MB"></a>java内存消耗: 27.1MB</h4><p><img src="Leetcode61-旋转链表/lc61_pic02.png" alt="lc61_pic02"></p>
-<p><img src="Leetcode61-旋转链表/lc61_pic01.png" alt="lc_pic01"></p>
+<h3 id="leetcode-90-Solution"><a href="#leetcode-90-Solution" class="headerlink" title="leetcode 90% Solution"></a>leetcode 90% Solution</h3><h4 id="java执行用时-5ms"><a href="#java执行用时-5ms" class="headerlink" title="java执行用时: 5ms"></a>java执行用时: 5ms</h4><h4 id="java内存消耗-27-1MB"><a href="#java内存消耗-27-1MB" class="headerlink" title="java内存消耗: 27.1MB"></a>java内存消耗: 27.1MB</h4><p><img src="/picture/lc61_pic02.png" alt="lc61_pic02"></p>
+<p><img src="/picture/lc61_pic01.png" alt="lc_pic01"></p>
 <h2 id="优化算法"><a href="#优化算法" class="headerlink" title="优化算法"></a>优化算法</h2><h3 id="算法思想-1"><a href="#算法思想-1" class="headerlink" title="算法思想"></a>算法思想</h3><ul>
 <li><ol>
 <li><strong>定义节点headPoint指向head,用while循环获得链表head的长度，用len保存。定义n赋值k % len, 如果n等于0,说明移动位置长度k是链表长度整数倍，链表不需要变动，直接返回head.</strong></li>
@@ -521,8 +521,8 @@
 <h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">rotateRightPlus</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">       ListNode headPoint = head;</span><br><span class="line">       <span class="keyword">while</span> (headPoint != <span class="keyword">null</span>)&#123;</span><br><span class="line">           headPoint = headPoint.next;</span><br><span class="line">           len++;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">int</span> n = k % len;</span><br><span class="line">       <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> head;</span><br><span class="line">       <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">       headPoint = head;</span><br><span class="line">       ListNode next = <span class="keyword">null</span>;</span><br><span class="line">       <span class="keyword">while</span> (headPoint != <span class="keyword">null</span>)&#123;</span><br><span class="line">           <span class="keyword">if</span> (count == (len - n -<span class="number">1</span>))&#123;</span><br><span class="line">               next = headPoint.next;</span><br><span class="line">               headPoint.next = <span class="keyword">null</span>;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           count++;</span><br><span class="line">           headPoint = headPoint.next;</span><br><span class="line">       &#125;</span><br><span class="line">       ListNode res = next;</span><br><span class="line">       <span class="keyword">while</span> (next.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">           next = next.next;</span><br><span class="line">       &#125;</span><br><span class="line">       next.next = head;</span><br><span class="line">       <span class="keyword">return</span> res;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><p><strong>时间复杂度：该算法对含有 L 个结点的head进行了一次遍历。因此时间复杂度为 O(L)</strong></p>
 <p><strong>空间复杂度：因为变量空间申请是常数级，故空间复杂度为O(1)</strong></p>
-<h3 id="leetcode-97-Solution"><a href="#leetcode-97-Solution" class="headerlink" title="leetcode 97% Solution"></a>leetcode 97% Solution</h3><h4 id="java执行用时-9ms"><a href="#java执行用时-9ms" class="headerlink" title="java执行用时: 9ms"></a>java执行用时: 9ms</h4><h4 id="java内存消耗-21-9MB"><a href="#java内存消耗-21-9MB" class="headerlink" title="java内存消耗: 21.9MB"></a>java内存消耗: 21.9MB</h4><p><img src="Leetcode61-旋转链表/lc61_time.png" alt="lc61_time"></p>
-<p><img src="Leetcode61-旋转链表/lc61_rank.png" alt="lc_rank"></p>
+<h3 id="leetcode-97-Solution"><a href="#leetcode-97-Solution" class="headerlink" title="leetcode 97% Solution"></a>leetcode 97% Solution</h3><h4 id="java执行用时-9ms"><a href="#java执行用时-9ms" class="headerlink" title="java执行用时: 9ms"></a>java执行用时: 9ms</h4><h4 id="java内存消耗-21-9MB"><a href="#java内存消耗-21-9MB" class="headerlink" title="java内存消耗: 21.9MB"></a>java内存消耗: 21.9MB</h4><p><img src="/picture/lc61_time.png" alt="lc61_time"></p>
+<p><img src="/picture/lc61_rank.png" alt="lc_rank"></p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>初来乍到，请多多指教。如有更好的解法，欢迎在评论区讨论 ，也希望有leetcode好友加V: ZKLOVE9527 一起学习 。(微信加好友请备注 leetcode)</p>
 
       
@@ -555,7 +555,7 @@
   <p><span>本文标题:</span><a href="/2019/02/19/Leetcode61-旋转链表/">Leetcode61-旋转链表</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年02月19日 - 10:02</p>
-  <p><span>最后更新:</span>2019年02月20日 - 13:02</p>
+  <p><span>最后更新:</span>2019年09月04日 - 12:09</p>
   <p><span>原始链接:</span><a href="/2019/02/19/Leetcode61-旋转链表/" title="Leetcode61-旋转链表">https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/02/19/Leetcode61-旋转链表/" aria-label="复制成功！"></i></span>
   </p>
@@ -914,7 +914,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 

@@ -130,16 +130,16 @@
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
 <meta property="og:description" content="AQS概述 AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug Lea）期望它能够成为实现大部分同步需求的基础。它是JUC并发包中的核心基础组件。 AQS解决了子实现同步器时涉及当的大量细节问题，例如获取同步">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs_gs.webp">
-<meta property="og:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs00.png">
-<meta property="og:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs01.jpg">
-<meta property="og:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs02.jpg">
-<meta property="og:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs03.jpg">
-<meta property="og:updated_time" content="2019-07-22T11:14:35.000Z">
+<meta property="og:image" content="https://www.vazh.cn/picture/aqs_gs.webp">
+<meta property="og:image" content="https://www.vazh.cn/picture/aqs00.png">
+<meta property="og:image" content="https://www.vazh.cn/picture/aqs01.jpg">
+<meta property="og:image" content="https://www.vazh.cn/picture/aqs02.jpg">
+<meta property="og:image" content="https://www.vazh.cn/picture/aqs03.jpg">
+<meta property="og:updated_time" content="2019-09-04T02:51:52.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JUC源码分析之AQS">
 <meta name="twitter:description" content="AQS概述 AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug Lea）期望它能够成为实现大部分同步需求的基础。它是JUC并发包中的核心基础组件。 AQS解决了子实现同步器时涉及当的大量细节问题，例如获取同步">
-<meta name="twitter:image" content="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/picture/aqs_gs.webp">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/aqs_gs.webp">
 
 
 
@@ -500,7 +500,7 @@
 <li>共享锁：可以被多个线程同时获取(<code>CountDownLatch</code>、<code>ReadWriteLock</code>的读锁)。</li>
 </ul>
 <p>不管是独占锁还是共享锁，本质上都是对AQS内部的一个变量state的获取，state是一个原子性的int变量，可用来表示锁状态、资源数等，如下图。</p>
-<p><img src="picture/aqs_gs.webp" alt="aqs"></p>
+<p><img src="/picture/aqs_gs.webp" alt="aqs"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The synchronization state.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">int</span> state;</span><br></pre></td></tr></table></figure>
 <p>AQS使用一个int类型的成员变量state来表示同步状态，当state&gt;0时表示已经获取了锁，当state = 0时表示释放了锁。它提供了三个方法（getState()、setState(int newState)、compareAndSetState(int expect,int update)）来对同步状态state进行操作，当然AQS可以确保对state的操作是安全的。变量使用volatile修饰，表示每一次更新都会及时的刷到主存中。</p>
 <h2 id="数据结构与结构参数"><a href="#数据结构与结构参数" class="headerlink" title="数据结构与结构参数"></a>数据结构与结构参数</h2><p><strong>AQS的内部实现了两个队列，一个同步队列和一个条件队列</strong></p>
@@ -509,7 +509,7 @@
 <li><strong>同步队列</strong>的作用是，在线程获取资源失败后，进入同步队列队尾保持自旋等待状态， 在同步队列中的线程在自旋时会判断其前节点是否为head节点，如果为head节点则不断尝试获取资源/锁，获取成功则退出同步队列。当线程执行完逻辑后，会释放资源/锁，释放后唤醒其后继节点。<h3 id="同步队列与条件队列的关系"><a href="#同步队列与条件队列的关系" class="headerlink" title="同步队列与条件队列的关系"></a>同步队列与条件队列的关系</h3></li>
 </ul>
 <p>首先展示同步队列与条件队列的结构图，如下：</p>
-<p><img src="picture/aqs00.png" alt="aqs"></p>
+<p><img src="/picture/aqs00.png" alt="aqs"></p>
 <p><strong><em>同步队列节点来源：</em></strong></p>
 <ol>
 <li><p>同步队列依赖一个双向链表来完成同步状态的管理，当前线程获取同步状态失败 后，同步器会将线程构建成一个节点，并将其加入同步队列中。</p>
@@ -529,15 +529,15 @@
 </ol>
 <h3 id="实例说明"><a href="#实例说明" class="headerlink" title="实例说明"></a>实例说明</h3><ol>
 <li><p>假设初始状态如下，节点A、节点B在同步队列中。</p>
-<p><img src="picture/aqs01.jpg" alt="aqs"></p>
+<p><img src="/picture/aqs01.jpg" alt="aqs"></p>
 </li>
 <li><p>节点A的线程获取锁权限，此时调用<code>await</code>方法。节点A从同步队列移除， 并加入条件队列中。</p>
-<p><img src="picture/aqs02.jpg" alt="aqs"></p>
+<p><img src="/picture/aqs02.jpg" alt="aqs"></p>
 </li>
 <li><p>调用 <code>signal</code>方法，从条件队列中取出第一个节点，并加入同步队列中，等待获取资源</p>
 </li>
 </ol>
-<p><img src="picture/aqs03.jpg" alt="aqs"></p>
+<p><img src="/picture/aqs03.jpg" alt="aqs"></p>
 <p>以上三个说明实例用图片形式解释了同步队列与条件队列节点可相互转化 。需要注意的是同步队列中，头结点<code>head</code>与尾节点<code>tail</code>被放在一个同步器中，也就是Node节点。不管是同步队列还是条件队列，<strong>其内部都是由节点Node组成</strong>，首先介绍下AQS的内部类Node，主要源码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Marker to indicate a node is waiting in shared mode</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Node SHARED = <span class="keyword">new</span> Node();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Marker to indicate a node is waiting in exclusive mode</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Node EXCLUSIVE = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//取消</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CANCELLED = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//等待触发</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIGNAL = -<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//等待条件</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CONDITION = -<span class="number">2</span>;</span><br><span class="line">    <span class="comment">//状态需要向后传播</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PROPAGATE = -<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** 等待状态 */</span></span><br><span class="line">    <span class="keyword">volatile</span> <span class="keyword">int</span> waitStatus;</span><br><span class="line">    <span class="comment">/** 前驱节点 */</span></span><br><span class="line">    <span class="keyword">volatile</span> Node prev;</span><br><span class="line">    <span class="comment">/** 后继节点 */</span></span><br><span class="line">    <span class="keyword">volatile</span> Node next;</span><br><span class="line">   <span class="comment">/** 获取同步状态的线程 */</span></span><br><span class="line">    <span class="keyword">volatile</span> Thread thread;</span><br><span class="line">    Node nextWaiter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>说明：Node的实现很简单，就是一个普通双向链表的实现，这里主要说明一下内部的几个等待状态：</p>
@@ -657,7 +657,7 @@
   <p><span>本文标题:</span><a href="/2019/07/06/JUC源码分析之AQS/">JUC源码分析之AQS</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年07月06日 - 15:07</p>
-  <p><span>最后更新:</span>2019年07月22日 - 19:07</p>
+  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
   <p><span>原始链接:</span><a href="/2019/07/06/JUC源码分析之AQS/" title="JUC源码分析之AQS">https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/" aria-label="复制成功！"></i></span>
   </p>
@@ -1018,7 +1018,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共64.6k字</span>
+  <span class="post-count">博客全站共64.4k字</span>
 </div>
 
 
