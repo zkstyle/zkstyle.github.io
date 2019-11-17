@@ -131,7 +131,7 @@
 <meta property="og:description" content="问题描述 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。 请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。 你可以假设 nums1 和 nums2 不会同时为空。 示例 1: nums1 = [1, 3]nums2 = [2] 则中位数是 2.0示例 2: nums1 = [1, 2]nums2 = [3, 4] 则中位数是 (2 +">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.vazh.cn/picture/lc04.png">
-<meta property="og:updated_time" content="2019-11-17T05:23:51.911Z">
+<meta property="og:updated_time" content="2019-11-17T06:58:32.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode04-寻找两个有序数组的中位数">
 <meta name="twitter:description" content="问题描述 给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。 请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。 你可以假设 nums1 和 nums2 不会同时为空。 示例 1: nums1 = [1, 3]nums2 = [2] 则中位数是 2.0示例 2: nums1 = [1, 2]nums2 = [3, 4] 则中位数是 (2 +">
@@ -447,7 +447,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  3,103 字
+                  1,990 字
                 </span>
               
 
@@ -463,7 +463,7 @@
                   <span class="post-meta-item-text">阅读时长</span>
                 
                 <span title="阅读时长">
-                  ≈16 分钟
+                  ≈9 分钟
                 </span>
               
             </div>
@@ -500,107 +500,104 @@
 </blockquote>
 <p>如果理解了中位数的划分作用，我们就很接近答案了。</p>
 <p>首先，让我们在任一位置 iii 将 A\text{A}A 划分成两个部分：</p>
-<pre><code>      left_A             |        right_A
-A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
-</code></pre><p>由于 A\text{A}A 中有 mmm 个元素， 所以我们有 m+1m+1m+1 种划分的方法（i\=0∼mi = 0 \sim mi\=0∼m）。</p>
+<pre><code>      left_A                                      |                right_A
+A[0], A[1], ..., A[i-1]                  |                  A[i], A[i+1], ..., A[m-1]
+</code></pre><p>由于 A 中有 m 个元素， 所以我们有 m+1种划分的方法（i=0∼m）。</p>
 <p>我们知道：</p>
 <blockquote>
-<p>len(left_A)\=i,len(right_A)\=m−i\text{len}(\text{left\_A}) = i, \text{len}(\text{right\_A}) = m - ilen(left_A)\=i,len(right_A)\=m−i.</p>
-<p>注意：当 i\=0i = 0i\=0 时，left_A\text{left\_A}left_A 为空集， 而当 i\=mi = mi\=m 时, right_A\text{right\_A}right_A 为空集。</p>
+<p>len(left_A) = i, len(right_A) = m−i</p>
+<p>注意：当 i=0 时，left_A 为空集， 而当 i=m 时, right_A 为空集。</p>
 </blockquote>
-<p>采用同样的方式，我们在任一位置 jjj 将 B\text{B}B 划分成两个部分：</p>
-<pre><code>      left_B             |        right_B
-B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
-</code></pre><p>将 left_A\text{left\_A}left_A 和 left_B\text{left\_B}left_B 放入一个集合，并将 right_A\text{right\_A}right_A 和 right_B\text{right\_B}right_B 放入另一个集合。 再把这两个新的集合分别命名为 left_part\text{left\_part}left_part 和 right_part\text{right\_part}right_part：</p>
-<pre><code>      left_part          |        right_part
-A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
-B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
+<p>采用同样的方式，我们在任一位置 j将 B 划分成两个部分：</p>
+<pre><code>      left_B                                                 |        right_B
+B[0], B[1], ..., B[j-1]                          |  B[j], B[j+1], ..., B[n-1]
+</code></pre><p>将 left_A 和 left_B放入一个集合，并将 right_A 和 right_B 放入另一个集合。 再把这两个新的集合分别命名为 left_part 和 right_part：</p>
+<pre><code>      left_part                                          |                                        right_part
+A[0], A[1], ..., A[i-1]                           |                              A[i], A[i+1], ..., A[m-1]
+B[0], B[1], ..., B[j-1]                           |                              B[j], B[j+1], ..., B[n-1]
 </code></pre><p>如果我们可以确认：</p>
 <blockquote>
 <ol>
-<li>len(left_part)\=len(right_part)\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})len(left_part)\=len(right_part)</li>
-<li>max⁡(left_part)≤min⁡(right_part)\max(\text{left\_part}) \leq \min(\text{right\_part})max(left_part)≤min(right_part)</li>
+<li>len(left_part) = len(right_part)</li>
+<li>max⁡(left_part)≤min⁡(right_part)</li>
 </ol>
 </blockquote>
-<p>那么，我们已经将 {A,B}\{\text{A}, \text{B}\}{A,B} 中的所有元素划分为相同长度的两个部分，且其中一部分中的元素总是大于另一部分中的元素。那么：</p>
-<p>median\=max(left_part)+min(right_part)2\text{median} = \frac{\text{max}(\text{left}\_\text{part}) + \text{min}(\text{right}\_\text{part})}{2} median\=2max(left_part)+min(right_part)</p>
-<p>要确保这两个条件，我们只需要保证：</p>
+<p>那么，我们已经将 {A,B}中的所有元素划分为相同长度的两个部分，且其中一部分中的元素总是大于另一部分中的元素。那么：</p>
+<p>$$<br>median=\frac{max(left_part)+min(right_part)}{2}<br>$$<br>要确保这两个条件，我们只需要保证：</p>
 <blockquote>
-<ol>
-<li><p>i+j\=m−i+n−ji + j = m - i + n - ji+j\=m−i+n−j（或：m−i+n−j+1m - i + n - j + 1m−i+n−j+1）<br>如果 n≥mn \geq mn≥m，只需要使 i\=0∼m,j\=m+n+12−i\ i = 0 \sim m,\ j = \frac{m + n + 1}{2} - i \\i\=0∼m,j\=2m+n+1−i</p>
-</li>
-<li><p>B[j−1]≤A[i]\text{B}[j-1] \leq \text{A}[i]B[j−1]≤A[i] 以及 A[i−1]≤B[j]\text{A}[i-1] \leq \text{B}[j]A[i−1]≤B[j]</p>
-</li>
-</ol>
+<p>$$<br>i+j=m−i+n−j（或：m - i + n - j + 1 )<br>$$</p>
+<p>$$<br>如果 n≥m，只需要使 i = 0 ~ m,\ j = \frac{m + n + 1}{2} - i<br>$$</p>
+<p>$$<br>\text{B}[j-1] \leq \text{A}[i]  和  \text{A}[i-1] \leq \text{B}[j]<br>$$</p>
 </blockquote>
-<p>ps.1 为了简化分析，我假设 A[i−1],B[j−1],A[i],B[j]\text{A}[i-1], \text{B}[j-1], \text{A}[i], \text{B}[j]A[i−1],B[j−1],A[i],B[j] 总是存在，哪怕出现 i\=0i=0i\=0，i\=mi=mi\=m，j\=0j=0j\=0，或是 j\=nj=nj\=n 这样的临界条件。<br>我将在最后讨论如何处理这些临界值。</p>
-<p>ps.2 为什么 n≥mn \geq mn≥m？由于0≤i≤m0 \leq i \leq m0≤i≤m 且 j\=m+n+12−ij = \frac{m + n + 1}{2} - ij\=2m+n+1−i，我必须确保 jjj 不是负数。如果 n&lt;mn &lt; mn&lt;m，那么 jjj 将可能是负数，而这会造成错误的答案。</p>
+<p>ps.1 为了简化分析，我假设 A[i−1],B[j−1],A[i],B[j]总是存在，哪怕出现 i=0，i=m，j=0，或是 j=n 这样的临界条件。<br>我将在最后讨论如何处理这些临界值。</p>
+<p>ps.2 为什么 n≥m？由于0≤i≤m　且<br>$$<br>j= \frac{m + n + 1}{2} - i<br>$$<br> 我必须确保 j 不是负数。如果 n&lt;m，那么 j 将可能是负数，而这会造成错误的答案。</p>
 <p>所以，我们需要做的是：</p>
 <blockquote>
-<p>在 [0，m][0，m][0，m] 中搜索并找到目标对象 iii，以使：</p>
-<p>B[j−1]≤A[i]\qquad \text{B}[j-1] \leq \text{A}[i]B[j−1]≤A[i] 且 A[i−1]≤B[j],\text{A}[i-1] \leq \text{B}[j],A[i−1]≤B[j], 其中 j\=m+n+12−ij = \frac{m + n + 1}{2} - ij\=2m+n+1−i</p>
+<p>在 [0，m]中搜索并找到目标对象 i，以使：</p>
+<p>$$<br>B[j−1]≤A[i] 且 \text{A}[i-1] \leq \text{B}[j], 其中 j = \frac{m + n + 1}{2} - i<br>$$</p>
 </blockquote>
 <p>接着，我们可以按照以下步骤来进行二叉树搜索：</p>
 <ol>
-<li><p>设 imin\=0\text{imin} = 0imin\=0，imax\=m\text{imax} = mimax\=m, 然后开始在 [imin,imax][\text{imin}, \text{imax}][imin,imax] 中进行搜索。</p>
+<li><p>设 imin=0，imax=m, 然后开始在 [imin,imax]中进行搜索。</p>
 </li>
-<li><p>令 i\=imin+imax2i = \frac{\text{imin} + \text{imax}}{2}i\=2imin+imax， j\=m+n+12−ij = \frac{m + n + 1}{2} - ij\=2m+n+1−i</p>
+<li><p>令<br>$$<br> i = \frac{\text{imin} + \text{imax}}{2},<br>  j = \frac{m + n + 1}{2} - i</p>
+<p>$$</p>
 </li>
-<li><p>现在我们有 len(left_part)\=len(right_part)\text{len}(\text{left}\_\text{part})=\text{len}(\text{right}\_\text{part})len(left_part)\=len(right_part)。 而且我们只会遇到三种情况：</p>
+</ol>
+<ol start="3">
+<li><p>现在我们有 len(left_part)=len(right_part)。 而且我们只会遇到三种情况：</p>
 <ul>
-<li><p>B[j−1]≤A[i]\text{B}[j-1] \leq \text{A}[i]B[j−1]≤A[i] 且 A[i−1]≤B[j]\text{A}[i-1] \leq \text{B}[j]A[i−1]≤B[j]：<br>这意味着我们找到了目标对象 iii，所以可以停止搜索。</p>
+<li><p>B[j−1]≤A[i] 且 A[i−1]≤B[j]：<br>这意味着我们找到了目标对象 i，所以可以停止搜索。</p>
 </li>
-<li><p>B[j−1]>A[i]\text{B}[j-1] &gt; \text{A}[i]B[j−1]>A[i]：<br>这意味着 A[i]\text{A}[i]A[i] 太小，我们必须调整 iii 以使 B[j−1]≤A[i]\text{B}[j-1] \leq \text{A}[i]B[j−1]≤A[i]。<br>我们可以增大 iii 吗？  </p>
-<pre><code>是的，因为当 iii 被增大的时候，jjj 就会被减小。  
-因此 B\[j−1\]\\text{B}\[j-1\]B\[j−1\] 会减小，而 A\[i\]\\text{A}\[i\]A\[i\] 会增大，那么 B\[j−1\]≤A\[i\]\\text{B}\[j-1\] \\leq \\text{A}\[i\]B\[j−1\]≤A\[i\] 就可能被满足。  
-</code></pre><p>我们可以减小 iii 吗？  </p>
-<pre><code>不行，因为当 iii 被减小的时候，jjj 就会被增大。  
-因此 B\[j−1\]\\text{B}\[j-1\]B\[j−1\] 会增大，而 A\[i\]\\text{A}\[i\]A\[i\] 会减小，那么 B\[j−1\]≤A\[i\]\\text{B}\[j-1\] \\leq \\text{A}\[i\]B\[j−1\]≤A\[i\] 就可能不满足。  
-</code></pre><p>所以我们必须增大 iii。也就是说，我们必须将搜索范围调整为 [i+1,imax][i+1, \text{imax}][i+1,imax]。<br>因此，设 imin\=i+1\text{imin} = i+1imin\=i+1，并转到步骤 2。</p>
+<li><p>B[j−1]&gt;A[i]：<br>这意味着 A[i]太小，我们必须调整 i 以使 B[j−1]≤A[i]。<br>我们可以增大 i 吗？  </p>
+<pre><code>是的，因为当 i 被增大的时候，j 就会被减小。  
+因此 B\[j−1] 会减小，而 A\[i] 会增大，那么 B\[j−1\]≤A\[i]就可能被满足。  
+</code></pre><p>我们可以减小 i吗？  </p>
+<pre><code>不行，因为当 i 被减小的时候，j就会被增大。  
+因此 B\[j−1] 会增大，而 A\[i]会减小，那么 B\[j−1\]≤A\[i]就可能不满足。  
+</code></pre><p>所以我们必须增大 i。也就是说，我们必须将搜索范围调整为 [i+1,imax]。<br>因此，设 imin=i+1，并转到步骤 2。</p>
 </li>
-<li><p>A[i−1]>B[j]\text{A}[i-1] &gt; \text{B}[j]A[i−1]>B[j]：<br>这意味着 A[i−1]\text{A}[i-1]A[i−1] 太大，我们必须减小 iii 以使 A[i−1]≤B[j]\text{A}[i-1]\leq \text{B}[j]A[i−1]≤B[j]。<br>也就是说，我们必须将搜索范围调整为 [imin,i−1][\text{imin}, i-1][imin,i−1]。<br>因此，设 imax\=i−1\text{imax} = i-1imax\=i−1，并转到步骤 2。</p>
+<li><p>A[i−1]>B[j]：<br>这意味着 A[i−1] 太大，我们必须减小 i 以使 A[i−1]≤B[j]。<br>也就是说，我们必须将搜索范围调整为 [imin,i−1]。<br>因此，设 imax=i−1，并转到步骤 2。</p>
 </li>
 </ul>
 </li>
 </ol>
-<p>当找到目标对象 iii 时，中位数为：</p>
+<p>当找到目标对象 i 时，中位数为：</p>
 <blockquote>
-<p>max⁡(A[i−1],B[j−1]),\max(\text{A}[i-1], \text{B}[j-1]),max(A[i−1],B[j−1]), 当 m+nm + nm+n 为奇数时</p>
+<p>max⁡(A[i−1],B[j−1]), 当 m+n为奇数时</p>
 </blockquote>
 <blockquote>
-<p>max⁡(A[i−1],B[j−1])+min⁡(A[i],B[j])2,\frac{\max(\text{A}[i-1], \text{B}[j-1]) + \min(\text{A}[i], \text{B}[j])}{2},2max(A[i−1],B[j−1])+min(A[i],B[j]), 当 m+nm + nm+n 为偶数时</p>
+<p>$$<br>\frac{max(A[i−1],B[j−1])+min(A[i],B[j])}{2} , 当m+n为偶数时<br>$$</p>
 </blockquote>
-<p>现在，让我们来考虑这些临界值 i\=0,i\=m,j\=0,j\=ni=0,i=m,j=0,j=ni\=0,i\=m,j\=0,j\=n，此时 A[i−1],B[j−1],A[i],B[j]\text{A}[i-1],\text{B}[j-1],\text{A}[i],\text{B}[j]A[i−1],B[j−1],A[i],B[j] 可能不存在。<br>其实这种情况比你想象的要容易得多。</p>
-<p>我们需要做的是确保 max(left_part)≤min(right_part)\text{max}(\text{left}\_\text{part}) \leq \text{min}(\text{right}\_\text{part})max(left_part)≤min(right_part)。 因此，如果 iii 和 jjj 不是临界值（这意味着 A[i−1],B[j−1],A[i],B[j]\text{A}[i-1], \text{B}[j-1],\text{A}[i],\text{B}[j]A[i−1],B[j−1],A[i],B[j] 全部存在）, 那么我们必须同时检查 B[j−1]≤A[i]\text{B}[j-1] \leq \text{A}[i]B[j−1]≤A[i] 以及 A[i−1]≤B[j]\text{A}[i-1] \leq \text{B}[j]A[i−1]≤B[j] 是否成立。<br>但是如果 A[i−1],B[j−1],A[i],B[j]\text{A}[i-1],\text{B}[j-1],\text{A}[i],\text{B}[j]A[i−1],B[j−1],A[i],B[j] 中部分不存在，那么我们只需要检查这两个条件中的一个（或不需要检查）。<br>举个例子，如果 i\=0i = 0i\=0，那么 A[i−1]\text{A}[i-1]A[i−1] 不存在，我们就不需要检查 A[i−1]≤B[j]\text{A}[i-1] \leq \text{B}[j]A[i−1]≤B[j] 是否成立。<br>所以，我们需要做的是：</p>
+<p>现在，让我们来考虑这些临界值  i = 0,i = m, j = 0, j = n，此时A[i − 1], B[j − 1], A[i], B[j] 可能不存在。<br>其实这种情况⽐你想象的要容易得多。其实这种情况比你想象的要容易得多。</p>
+<p>我们需要做的是确保 max(left_part)≤min(right_part)。 因此，如果i 和 j 不是临界值（这意味着 A[i−1],B[j−1],A[i],B[j]全部存在）, 那么我们必须同时检查 B[j−1]≤A[i]以及 A[i−1]≤B[j]是否成立。<br>但是如果 A[i−1],B[j−1],A[i],B[j]中部分不存在，那么我们只需要检查这两个条件中的一个（或不需要检查）。<br>举个例子，如果 i=0，那么 A[i−1] 不存在，我们就不需要检查 A[i−1]≤B[j]是否成立。<br>所以，我们需要做的是：</p>
 <blockquote>
-<p>在 [0，m][0，m][0，m] 中搜索并找到目标对象 iii，以使：</p>
-<p>(j\=0(j = 0(j\=0 or i\=mi = mi\=m or B[j−1]≤A[i])\text{B}[j-1] \leq \text{A}[i])B[j−1]≤A[i]) 或是<br>(i\=0(i = 0(i\=0 or j\=nj = nj\=n or A[i−1]≤B[j]),\text{A}[i-1] \leq \text{B}[j]),A[i−1]≤B[j]), 其中 j\=m+n+12−ij = \frac{m + n + 1}{2} - ij\=2m+n+1−i</p>
+<p>在 [0，m]中搜索并找到目标对象 i，以使：</p>
+<p>(j =0 or i =m or B[j−1]≤A[i]) 或是<br>(i =0 or j =n or A[i−1]≤B[j]), 其中<br>$$<br>j = \frac{m + n + 1}{2} - i<br>$$</p>
 </blockquote>
 <p>在循环搜索中，我们只会遇到三种情况：</p>
 <blockquote>
 <ol>
-<li>(j\=0(j = 0(j\=0 or i\=mi = mi\=m or B[j−1]≤A[i])\text{B}[j-1] \leq \text{A}[i])B[j−1]≤A[i]) 或是 (i\=0(i = 0(i\=0 or j\=nj = nj\=n or A[i−1]≤B[j])\text{A}[i-1] \leq \text{B}[j])A[i−1]≤B[j])，这意味着 iii 是完美的，我们可以停止搜索。</li>
-<li>j>0j &gt; 0j>0 and i&lt;mi &lt; mi<m and="" b\[j−1\]\="">A[i]\text{B}[j - 1] &gt; \text{A}[i]B[j−1]>A[i] 这意味着 iii 太小，我们必须增大它。</m></li>
-<li>i>0i &gt; 0i>0 and j&lt;nj &lt; nj<n and="" a\[i−1\]\="">B[j]\text{A}[i - 1] &gt; \text{B}[j]A[i−1]>B[j] 这意味着 iii 太大，我们必须减小它。</n></li>
+<li>(j =0 or i =m or B[j−1]≤A[i]) 或是  (i =0 or j =n or A[i−1]≤B[j])，这意味着 i 是完美的，我们可以停止搜索。</li>
+<li>j>0 and i<m and="" b\[j−1\]\="">A[i] 这意味着 i 太小，我们必须增大它。</m></li>
+<li>i>0  and j<n and="" a\[i−1\]\="">B[j] 这意味着 i 太大，我们必须减小它。</n></li>
 </ol>
 </blockquote>
-<p>感谢 @Quentin.chen 指出：i&lt;m⟹j>0i &lt; m \implies j &gt; 0i&lt;m⟹j>0 以及 i>0⟹j<ni> 0 \implies j &lt; ni>0⟹j&lt;n 始终成立，这是因为：</ni></p>
+<ol>
+<li>i&lt;m⟹  j>0   以及  i>0 ⟹ j&lt;n 始终成立，这是因为：</li>
+</ol>
 <blockquote>
-<p>m≤n,i&lt;m⟹j\=m+n+12−i>m+n+12−m≥2m+12−m≥0m \leq n,\ i &lt; m \implies j = \frac{m+n+1}{2} - i &gt; \frac{m+n+1}{2} - m \geq \frac{2m+1}{2} - m \geq 0 m≤n,i&lt;m⟹j\=2m+n+1−i>2m+n+1−m≥22m+1−m≥0</p>
-<p>m≤n,i>0⟹j\=m+n+12−i&lt;m+n+12≤2n+12≤nm \leq n,\ i &gt; 0 \implies j = \frac{m+n+1}{2} - i &lt; \frac{m+n+1}{2} \leq \frac{2n+1}{2} \leq n m≤n,i>0⟹j\=2m+n+1−i&lt;2m+n+1≤22n+1≤n</p>
+<p>$$<br>m≤n, i&lt;m⟹j= \frac{m+n+1}{2} - i  &gt; \frac{m+n+1}{2} - m ≥ \frac{2m+1}{2} - m ≥ 0<br>$$</p>
+<p>$$<br>m≤n, i&gt;0⟹j= \frac{m+n+1}{2} - i  &lt;\frac{m+n+1}{2}  ≤ \frac{2n+1}{2} ≤ n<br>$$</p>
 </blockquote>
-<p>所以，在情况 2 和 3中，我们不需要检查 j>0j &gt; 0j>0 或是 j&lt;nj &lt; nj&lt;n 是否成立。</p>
-<p><strong>复杂度分析</strong></p>
-<ul>
-<li><p>时间复杂度：O(log⁡(min(m,n)))O\big(\log\big(\text{min}(m,n)\big)\big)O(log(min(m,n)))，<br>首先，查找的区间是 [0,m][0, m][0,m]。<br>而该区间的长度在每次循环之后都会减少为原来的一半。<br>所以，我们只需要执行 log⁡(m)\log(m)log(m) 次循环。由于我们在每次循环中进行常量次数的操作，所以时间复杂度为 O(log⁡(m))O\big(\log(m)\big)O(log(m))。<br>由于 m≤nm \leq nm≤n，所以时间复杂度是 O(log⁡(min(m,n)))O\big(\log\big(\text{min}(m,n)\big)\big)O(log(min(m,n)))。</p>
+<p>所以，在情况 2 和 3中，我们不需要检查 j>0  或是 j&lt;n 是否成立。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays_P</span><span class="params">(<span class="keyword">int</span>[] A, <span class="keyword">int</span>[] B)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = A.length;</span><br><span class="line">        <span class="keyword">int</span> n = B.length;</span><br><span class="line">        <span class="keyword">if</span> (m &gt; n) &#123; <span class="comment">// to ensure m&lt;=n</span></span><br><span class="line">            <span class="keyword">int</span>[] temp = A; A = B; B = temp;</span><br><span class="line">            <span class="keyword">int</span> tmp = m; m = n; n = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> iMin = <span class="number">0</span>, iMax = m, halfLen = (m + n + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (iMin &lt;= iMax) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = (iMin + iMax) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> j = halfLen - i;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; iMax &amp;&amp; B[j-<span class="number">1</span>] &gt; A[i])&#123;</span><br><span class="line">                iMin = i + <span class="number">1</span>; <span class="comment">// i is too small</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (i &gt; iMin &amp;&amp; A[i-<span class="number">1</span>] &gt; B[j]) &#123;</span><br><span class="line">                iMax = i - <span class="number">1</span>; <span class="comment">// i is too big</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123; <span class="comment">// i is perfect</span></span><br><span class="line">                <span class="keyword">int</span> maxLeft = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">0</span>) &#123; maxLeft = B[j-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">0</span>) &#123; maxLeft = A[i-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; maxLeft = Math.max(A[i-<span class="number">1</span>], B[j-<span class="number">1</span>]); &#125;</span><br><span class="line">                <span class="keyword">if</span> ( (m + n) % <span class="number">2</span> == <span class="number">1</span> ) &#123; <span class="keyword">return</span> maxLeft; &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">int</span> minRight = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == m) &#123; minRight = B[j]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == n) &#123; minRight = A[i]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; minRight = Math.min(B[j], A[i]); &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> (maxLeft + minRight) / <span class="number">2.0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><ul>
+<li><p>时间复杂度：O(log⁡(min(m,n)))，<br>首先，查找的区间是 [0,m]。<br>而该区间的长度在每次循环之后都会减少为原来的一半。<br>所以，我们只需要执行 log⁡(m) 次循环。由于我们在每次循环中进行常量次数的操作，所以时间复杂度为 O(log⁡(m))。<br>由于 m≤n ，所以时间复杂度是 O(log⁡(min(m,n)))。</p>
 </li>
-<li><p>空间复杂度：O(1)O(1)O(1)，<br>我们只需要恒定的内存来存储 999 个局部变量， 所以空间复杂度为 O(1)O(1)O(1)。</p>
+<li><p>空间复杂度：O(1 ，<br>我们只需要恒定的内存来存储 9 个局部变量， 所以空间复杂度为 O(1) 。</p>
 </li>
 </ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays_P</span><span class="params">(<span class="keyword">int</span>[] A, <span class="keyword">int</span>[] B)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = A.length;</span><br><span class="line">        <span class="keyword">int</span> n = B.length;</span><br><span class="line">        <span class="keyword">if</span> (m &gt; n) &#123; <span class="comment">// to ensure m&lt;=n</span></span><br><span class="line">            <span class="keyword">int</span>[] temp = A; A = B; B = temp;</span><br><span class="line">            <span class="keyword">int</span> tmp = m; m = n; n = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> iMin = <span class="number">0</span>, iMax = m, halfLen = (m + n + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (iMin &lt;= iMax) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = (iMin + iMax) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> j = halfLen - i;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; iMax &amp;&amp; B[j-<span class="number">1</span>] &gt; A[i])&#123;</span><br><span class="line">                iMin = i + <span class="number">1</span>; <span class="comment">// i is too small</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (i &gt; iMin &amp;&amp; A[i-<span class="number">1</span>] &gt; B[j]) &#123;</span><br><span class="line">                iMax = i - <span class="number">1</span>; <span class="comment">// i is too big</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123; <span class="comment">// i is perfect</span></span><br><span class="line">                <span class="keyword">int</span> maxLeft = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">0</span>) &#123; maxLeft = B[j-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">0</span>) &#123; maxLeft = A[i-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; maxLeft = Math.max(A[i-<span class="number">1</span>], B[j-<span class="number">1</span>]); &#125;</span><br><span class="line">                <span class="keyword">if</span> ( (m + n) % <span class="number">2</span> == <span class="number">1</span> ) &#123; <span class="keyword">return</span> maxLeft; &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">int</span> minRight = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == m) &#123; minRight = B[j]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == n) &#123; minRight = A[i]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; minRight = Math.min(B[j], A[i]); &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> (maxLeft + minRight) / <span class="number">2.0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h2><p>复杂度分析</p>
-<p>时间复杂度：O\big(\log\big(\text{min}(m,n)\big)\big)O(log(min(m,n)))，<br>首先，查找的区间是 [0, m][0,m]。<br>而该区间的长度在每次循环之后都会减少为原来的一半。<br>所以，我们只需要执行 \log(m)log(m) 次循环。由于我们在每次循环中进行常量次数的操作，所以时间复杂度为 O\big(\log(m)\big)O(log(m))。<br>由于 m \leq nm≤n，所以时间复杂度是 O\big(\log\big(\text{min}(m,n)\big)\big)O(log(min(m,n)))。</p>
-<p>空间复杂度：O(1)O(1)，<br>我们只需要恒定的内存来存储 99 个局部变量， 所以空间复杂度为 O(1)O(1)。</p>
 <h2 id="leetcode-99-Solution"><a href="#leetcode-99-Solution" class="headerlink" title="leetcode 99% Solution"></a>leetcode 99% Solution</h2><p>执行用时 :3 ms, 在所有 java 提交中击败了99.23%的用户</p>
 <p>内存消耗 :47 MB, 在所有 java 提交中击败了94.74%的用户</p>
 <p><img src="/picture/lc04.png" alt="pic02.png"></p>
@@ -636,7 +633,7 @@ B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
   <p><span>本文标题:</span><a href="/2019/11/07/Leetcode04-寻找两个有序数组的中位数/">Leetcode04-寻找两个有序数组的中位数</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年11月07日 - 14:11</p>
-  <p><span>最后更新:</span>2019年11月17日 - 13:11</p>
+  <p><span>最后更新:</span>2019年11月17日 - 14:11</p>
   <p><span>原始链接:</span><a href="/2019/11/07/Leetcode04-寻找两个有序数组的中位数/" title="Leetcode04-寻找两个有序数组的中位数">https://www.vazh.cn/2019/11/07/Leetcode04-寻找两个有序数组的中位数/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/11/07/Leetcode04-寻找两个有序数组的中位数/" aria-label="复制成功！"></i></span>
   </p>
@@ -989,7 +986,7 @@ B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共67.5k字</span>
+  <span class="post-count">博客全站共66.4k字</span>
 </div>
 
 
