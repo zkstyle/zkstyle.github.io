@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "456d7aa2"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="JUC,ConcurrentLinkedDeque,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Elvis's Blogs" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="JUC源码分析-集合篇（五）：ConcurrentLinkedDeque ConcurrentLinkedDeque 是双向链表结构的无界并发队列。从JDK 7开始加入到J.U.C的行列中。使用CAS实现并发安全，与 ConcurrentLinkedQueue 的区别是该阻塞队列同时支持FIFO和FILO两种操作方式，即可以从队列的头和尾同时操作(插入/删除)。适合“多生产，多消费”的场景。内存一">
+<meta name="keywords" content="JUC,ConcurrentLinkedDeque">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JUC源码分析-集合篇(五):ConcurrentLinkedDeque">
+<meta property="og:url" content="https://www.vazh.cn/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/index.html">
+<meta property="og:site_name" content="Elvis&#39;s Blogs">
+<meta property="og:description" content="JUC源码分析-集合篇（五）：ConcurrentLinkedDeque ConcurrentLinkedDeque 是双向链表结构的无界并发队列。从JDK 7开始加入到J.U.C的行列中。使用CAS实现并发安全，与 ConcurrentLinkedQueue 的区别是该阻塞队列同时支持FIFO和FILO两种操作方式，即可以从队列的头和尾同时操作(插入/删除)。适合“多生产，多消费”的场景。内存一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6050820-1303a196ce819a3c.png?imageMogr2/auto-orient/strip|imageView2/2/w/876/format/webp">
+<meta property="og:updated_time" content="2020-05-12T11:39:09.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JUC源码分析-集合篇(五):ConcurrentLinkedDeque">
+<meta name="twitter:description" content="JUC源码分析-集合篇（五）：ConcurrentLinkedDeque ConcurrentLinkedDeque 是双向链表结构的无界并发队列。从JDK 7开始加入到J.U.C的行列中。使用CAS实现并发安全，与 ConcurrentLinkedQueue 的区别是该阻塞队列同时支持FIFO和FILO两种操作方式，即可以从队列的头和尾同时操作(插入/删除)。适合“多生产，多消费”的场景。内存一">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/6050820-1303a196ce819a3c.png?imageMogr2/auto-orient/strip|imageView2/2/w/876/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.vazh.cn/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/">
+
+
+
+
+
+  <title>JUC源码分析-集合篇(五):ConcurrentLinkedDeque | Elvis's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <a href="https://github.com/zkstyle" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Elvis's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">研一狗的日常</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.vazh.cn/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zkstyle">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zhihu02.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Elvis's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JUC源码分析-集合篇(五):ConcurrentLinkedDeque</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T14:32:50+08:00">
+                2020-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码分析/" itemprop="url" rel="index">
+                    <span itemprop="name">源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/" class="leancloud_visitors" data-flag-title="JUC源码分析-集合篇(五):ConcurrentLinkedDeque">    
+	       | &nbsp;
+               <span class="post-meta-divider"></span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+		 <span>℃ </span>
+             </span>
+          
+
+          
+
+          
+	    <br>
+            <div class="post-wordcount">
+              
+		&nbsp;
+                
+		
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  3,881 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  ≈17 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="JUC源码分析-集合篇（五）：ConcurrentLinkedDeque"><a href="#JUC源码分析-集合篇（五）：ConcurrentLinkedDeque" class="headerlink" title="JUC源码分析-集合篇（五）：ConcurrentLinkedDeque"></a>JUC源码分析-集合篇（五）：ConcurrentLinkedDeque</h1><blockquote>
+<p>ConcurrentLinkedDeque 是<strong>双向链表结构的无界并发队列</strong>。从JDK 7开始加入到J.U.C的行列中。使用CAS实现并发安全，与 ConcurrentLinkedQueue 的区别是该阻塞队列同时支持<strong>FIFO</strong>和<strong>FILO</strong>两种操作方式，即可以从队列的头和尾同时操作(插入/删除)。适合“多生产，多消费”的场景。内存一致性遵循<strong>对 ConcurrentLinkedDeque 的插入操作先行发生于(happen-before)访问或移除操作</strong>。相较于 ConcurrentLinkedQueue，ConcurrentLinkedDeque 由于是双端队列，所以在操作和概念上会更加复杂，来一起看下。</p>
+</blockquote>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>ConcurrentLinkedDeque（后面称CLD） 的实现方式继承了 ConcurrentLinkedQueue 和 LinkedTransferQueue的思想，在非阻塞算法的实现方面与 ConcurrentLinkedQueue 基本一致。关于 ConcurrentLinkedQueue，请参考笔者的上一篇文章：<a href="https://www.jianshu.com/p/0c5a672b2ade" target="_blank" rel="noopener">JUC源码分析-集合篇（三）：ConcurrentLinkedQueue</a>。</p>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p><img src="https://upload-images.jianshu.io/upload_images/6050820-1303a196ce819a3c.png?imageMogr2/auto-orient/strip|imageView2/2/w/876/format/webp" alt="img"></p>
+<p>ConcurrentLinkedDeque 继承关系</p>
+<p><strong>重要属性：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//头节点</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">volatile</span> Node&lt;E&gt; head;</span><br><span class="line"><span class="comment">//尾节点</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">volatile</span> Node&lt;E&gt; tail;</span><br><span class="line"><span class="comment">//终止节点</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Node&lt;Object&gt; PREV_TERMINATOR, NEXT_TERMINATOR;</span><br><span class="line"><span class="comment">//移除节点时更新链表属性的阀值</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HOPS = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<p>和ConcurrentLinkedQueue一样，CLD 内部也只维护了<code>head</code>和<code>tail</code>属性，对 head/tail 节点也使用了“不变性”和“可变性”约束，不过跟 ConcurrentLinkedQueue 有些许差异，我们来看一下：</p>
+<p><strong>head/tail 的不变性：</strong></p>
+<ol>
+<li>第一个节点总是能以O(1)的时间复杂度从 head 通过 prev 链接到达；</li>
+<li>最后一个节点总是能以O(1)的时间复杂度从 tail 通过 next 链接到达；</li>
+<li>所有live节点（item不为null的节点），都能从第一个节点通过调用 succ() 方法遍历可达；</li>
+<li>所有live节点（item不为null的节点），都能从最后一个节点通过调用 pred() 方法遍历可达；</li>
+<li>head/tail 不能为 null；</li>
+<li><strong>head</strong> 节点的 next 域不能引用到自身；</li>
+<li>head/tail 不会是GC-unlinked节点（但它可能是unlink节点）。</li>
+</ol>
+<p><strong>head/tail的可变性：</strong></p>
+<ol>
+<li>head/tail 节点的 item 域可能为 null，也可能不为 null；</li>
+<li>head/tail 节点可能从first/last/tail/head 节点访问时不可达；</li>
+<li><strong>tail</strong> 节点的 next 域可以引用到自身。</li>
+</ol>
+<p><em>注：CLD中也对 head/tail 的更新也使用了“松弛阀值”的概念（在 ConcurrentLinkedQueue 一篇中已经分析），除此之外，CLD设定了一个“跳跃阀值”-HOPS（指在查找活动节点时跳过的已删除节点数），在执行出队操作时，跳跃节点数大于2或者操作的节点不是 first/last 节点时才会更新链表（后面源码中详细分析）。</em></p>
+<p>除此之外，再来看看CLD中另外两个属性：</p>
+<ul>
+<li><strong>PREV_TERMINATOR</strong>：prev的终止节点，next指向自身，即<code>PREV_TERMINATOR.next = PREV_TERMINATOR</code>。在 first 节点出列后，会把first.next指向自身(<code>first.next=first</code>)，然后把prev设为<code>PREV_TERMINATOR</code>。</li>
+<li><strong>NEXT_TERMINATOR</strong>：next的终止节点，prev指向自身，即<code>NEXT_TERMINATOR.pre = NEXT_TERMINATOR</code>。在 last 节点出列后，会把last.prev指向自身(<code>last.prev=last</code>)，然后把next设为<br><code>NEXT_TERMINATOR</code>。</li>
+</ul>
+<hr>
+<h1 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h1><p>在开始源码分析之前，我们先来看一下CLD中对Node的定义：</p>
+<ol>
+<li><strong>live node</strong>：节点的 item!=null 被称为live节点。当节点的 item 被 CAS 改为 null，逻辑上来讲这个节点已经从链表中移除；一个新的元素通过 CAS 添加到一个包含空 prev 或空 next 的 first 或 last 节点，这个元素的节点在这时是 live节点。</li>
+<li><strong>first node &amp; last node</strong>：首节点(first node)总会有一个空的 prev 引用，终止任何从 live 节点开始的 prev 引用链；同样的最后一个节点(last node)是 next 的终止节点。first/last 节点的 item 可以为 null。并且 first 和 last 节点总是相互可达的。</li>
+<li><strong>active node</strong>：live节点、first/last 节点也被称为活跃节点(active node)，活跃节点一定是被链接的，如果p节点为active节点，则：<code>p.item != null || (p.prev == null &amp;&amp; p.next != p) || (p.next == null &amp;&amp; p.prev != p)</code></li>
+<li><strong>self-node</strong>：自链接节点，prev 或 next 指向自身的节点，自链接节点用在解除链接操作中，并且它们都不是active node。</li>
+<li><strong>head/tail节点</strong>：head/tail 也可能不是 first/last 节点。从 head 节点通过 prev 引用总是可以找到 first 节点，从 tail 节点通过 next 引用总是可以找到 last 节点。允许 head 和 tail 引用已删除的节点，这些节点没有链接，因此可能无法从 live 节点访问到。</li>
+</ol>
+<p>节点删除时经历三个阶段：逻辑删除(logical deletion)，未链接( unlinking)，和gc未链接( gc-unlinking)：</p>
+<ul>
+<li><strong>logical deletion：</strong>通过 CAS 修改节点 item 为 null 来完成，表示当前节点可以被解除链接(unlinking)。</li>
+<li><strong>unlinking：</strong> 这种状态下的节点与其他 active 节点有链接，但是其他 active 节点与之都没有链接，也就是说从这个状态下的节点可以达到 active 节点，但是从 active 节点不可达到这种状态的节点。在任何时候，从 first 通过 next 找到的 live 节点和从 last 通过 prev 找到的节点总是相等的。但是，在节点被逻辑删除时上述结论不成立，这些被逻辑删除的节点也可能只从一端是可达的。</li>
+<li><strong>gc-unlinking：</strong> GC未链接使已删除节点不可达到 active 节点，使GC更容易回收被删除的节点。通过让节点自链接或链接到终止节点（PREV_TERMINATOR 或 NEXT_TERMINATOR）来实现。 gc-unlinking 节点从 head/tail 访问不可达。这一步是为了使数据结构保持GC健壮性(gc-robust)，防止保守式GC（conservative GC，目前已经很少使用）对这些边界空间的使用。对保守式GC来说，使数据结构保持GC健壮性会消除内存无限滞留的问题，同时也提高了分代收机器的性能。</li>
+</ul>
+<p>如果同学们对上述理论还是一头雾水，那么从源码解析中我们就可以直观的看到它们的作用。<br>OK！准备工作已经做完，下面我们正式开始源码解析。</p>
+<hr>
+<h2 id="添加（入列）"><a href="#添加（入列）" class="headerlink" title="添加（入列）"></a>添加（入列）</h2><p>CLD的添加方法包括：<code>offer(E)、add(E)、push(E)、addFirst(E)、addLast(E)、offerFirst(E)、offerLast(E)</code>，所有这些操作都是通过<code>linkFirst(E)</code>或<code>linkLast(E)</code>来实现的。</p>
+<h3 id="linkFirst-E-linkLast-E"><a href="#linkFirst-E-linkLast-E" class="headerlink" title="linkFirst(E) / linkLast(E)"></a>linkFirst(E) / linkLast(E)</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Links e as first element.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkFirst</span>(<span class="params">E e</span>)</span> &#123;</span><br><span class="line">    checkNotNull(e);</span><br><span class="line">    final Node&lt;E&gt; newNode = <span class="keyword">new</span> Node&lt;E&gt;(e);</span><br><span class="line"></span><br><span class="line">    restartFromHead:</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">        <span class="comment">//从head节点往前寻找first节点</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; h = head, p = h, q;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((q = p.prev) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                (q = (p = q).prev) != <span class="literal">null</span>)</span><br><span class="line">                <span class="comment">// Check for head updates every other hop.</span></span><br><span class="line">                <span class="comment">// If p == q, we are sure to follow head instead.</span></span><br><span class="line">                <span class="comment">//如果head被修改，返回head重新查找</span></span><br><span class="line">                p = (h != (h = head)) ? h : q;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p.next == p) <span class="comment">// 自链接节点，重新查找</span></span><br><span class="line">                <span class="keyword">continue</span> restartFromHead;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// p is first node</span></span><br><span class="line">                newNode.lazySetNext(p); <span class="comment">// CAS piggyback</span></span><br><span class="line">                <span class="keyword">if</span> (p.casPrev(<span class="literal">null</span>, newNode)) &#123;</span><br><span class="line">                    <span class="comment">// Successful CAS is the linearization point</span></span><br><span class="line">                    <span class="comment">// for e to become an element of this deque,</span></span><br><span class="line">                    <span class="comment">// and for newNode to become "live".</span></span><br><span class="line">                    <span class="keyword">if</span> (p != h) <span class="comment">// hop two nodes at a time 跳两个节点时才修改head</span></span><br><span class="line">                        casHead(h, newNode);  <span class="comment">// Failure is OK.</span></span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// Lost CAS race to another thread; re-read prev</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Links e as last element.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkLast</span>(<span class="params">E e</span>)</span> &#123;</span><br><span class="line">    checkNotNull(e);</span><br><span class="line">    final Node&lt;E&gt; newNode = <span class="keyword">new</span> Node&lt;E&gt;(e);</span><br><span class="line"></span><br><span class="line">    restartFromTail:</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">        <span class="comment">//从tail节点往后寻找last节点</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; t = tail, p = t, q;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((q = p.next) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                (q = (p = q).next) != <span class="literal">null</span>)</span><br><span class="line">                <span class="comment">// Check for tail updates every other hop.</span></span><br><span class="line">                <span class="comment">// If p == q, we are sure to follow tail instead.</span></span><br><span class="line">                <span class="comment">//如果tail被修改，返回tail重新查找</span></span><br><span class="line">                p = (t != (t = tail)) ? t : q;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p.prev == p) <span class="comment">// 自链接节点，重新查找</span></span><br><span class="line">                <span class="keyword">continue</span> restartFromTail;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// p is last node</span></span><br><span class="line">                newNode.lazySetPrev(p); <span class="comment">// CAS piggyback</span></span><br><span class="line">                <span class="keyword">if</span> (p.casNext(<span class="literal">null</span>, newNode)) &#123;</span><br><span class="line">                    <span class="comment">// Successful CAS is the linearization point</span></span><br><span class="line">                    <span class="comment">// for e to become an element of this deque,</span></span><br><span class="line">                    <span class="comment">// and for newNode to become "live".</span></span><br><span class="line">                    <span class="keyword">if</span> (p != t) <span class="comment">// hop two nodes at a time 跳两个节点时才修改tail</span></span><br><span class="line">                        casTail(t, newNode);  <span class="comment">// Failure is OK.</span></span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// Lost CAS race to another thread; re-read next</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong>：<code>linkFirst</code>是插入新节点到队列头的主函数，执行流程如下：<br>首先从 head 节点开始向前循环找到 first 节点(<code>p.prev==null&amp;&amp;p.next!=p</code>)；然后通过<code>lazySetNext</code>设置新节点的 next 节点为 first；然后 CAS 修改 first 的 prev 为新节点。注意这里 CAS 指令成功后会判断 first 节点是否已经跳了两个节点，只有在跳了两个节点才会 CAS 更新 head，这也是为了节省 CAS 指令执行开销。<code>linkLast</code>是插入新节点到队列尾，执行流程与<code>linkFirst</code>一致，不多赘述，具体见源码。<br><em>注：<code>lazySetNext</code>通过 Unsafe 类的<code>putOrderedObject</code>实现，有关这个方法，请参考笔者的另一篇文章：<a href="https://www.jianshu.com/p/a897c4b8929f" target="_blank" rel="noopener">JUC源码分析—CAS和Unsafe</a>。</em></p>
+<hr>
+<h2 id="获取-出列"><a href="#获取-出列" class="headerlink" title="获取(出列)"></a>获取(出列)</h2><p>CLD的获取方法分两种：<br>获取节点：<code>peek、peekFirst 、peekLast、getFirst、getLast</code>，都是通过<code>peekFirst 、peekLast</code>实现。<br>获取并移除节点： <code>poll、pop、remove、pollFirst、pollLast、removeFirst、removeLast</code>，都是通过<code>pollFirst、pollLast</code>实现。</p>
+<p><code>pollFirst、pollLast</code>包括了<code>peekFirst 、peekLast</code>的实现，都是找到并返回 first/last 节点，不同的是，<code>pollFirst、pollLast</code>比<code>peekFirst 、peekLast</code>多了 unlink 这一步。所以这里我们只对<code>pollFirst</code>和<code>pollLast</code>两个方法进行解析。<br>首先来看一下pollFirst() ：</p>
+<h3 id="pollFirst"><a href="#pollFirst" class="headerlink" title="pollFirst()"></a>pollFirst()</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**获取并移除队列首节点*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">pollFirst</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (Node&lt;E&gt; p = first(); p != <span class="literal">null</span>; p = succ(p)) &#123;</span><br><span class="line">        E item = p.item;</span><br><span class="line">        <span class="keyword">if</span> (item != <span class="literal">null</span> &amp;&amp; p.casItem(item, <span class="literal">null</span>)) &#123;</span><br><span class="line">            unlink(p);</span><br><span class="line">            <span class="keyword">return</span> item;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong> <code>pollFirst()</code>用于找到链表中首个 item 不为 null 的节点（注意并不是first节点，因为first节点的item可以为null），并返回节点的item。涉及的内部方法较多，不过都很简单，我们通过穿插代码方式分析：</p>
+<ol>
+<li>首先通过<code>first()</code>方法找到 first 节点，first 节点必须为 active 节点(<code>p.prev==null&amp;&amp;p.next!=p</code>)。<code>first()</code>源码如下：</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Node&lt;E&gt; first() &#123;</span><br><span class="line">    restartFromHead:</span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">        <span class="comment">//从head开始往前找</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; h = head, p = h, q;;) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((q = p.prev) != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                (q = (p = q).prev) != <span class="literal">null</span>)</span><br><span class="line">                <span class="comment">// Check for head updates every other hop.</span></span><br><span class="line">                <span class="comment">// If p == q, we are sure to follow head instead.</span></span><br><span class="line">                <span class="comment">//如果head被修改则返回新的head重新查找，否则继续向前(prev)查找</span></span><br><span class="line">                p = (h != (h = head)) ? h : q;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == h</span><br><span class="line">                     <span class="comment">// It is possible that p is PREV_TERMINATOR,</span></span><br><span class="line">                     <span class="comment">// but if so, the CAS is guaranteed to fail.</span></span><br><span class="line">                    <span class="comment">//找到的节点不是head节点，CAS修改head</span></span><br><span class="line">                     || casHead(h, p))</span><br><span class="line">                <span class="keyword">return</span> p;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">continue</span> restartFromHead;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果<code>first.item==null</code>（这里是允许的，具体见上面我们对 first/last 节点的介绍），则继续调用<code>succ</code>方法寻找后继节点。<code>succ</code>源码如下：</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**返回指定节点的的后继节点，如果指定节点的next指向自己，返回first节点*/</span></span><br><span class="line"><span class="function">final Node&lt;E&gt; <span class="title">succ</span>(<span class="params">Node&lt;E&gt; p</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> should we skip deleted nodes here?</span></span><br><span class="line">    Node&lt;E&gt; q = p.next;</span><br><span class="line">    <span class="keyword">return</span> (p == q) ? first() : q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>CAS 修改节点的 item 为 null（<strong>即 “逻辑删除-logical deletion”</strong>），然后调用<code>unlink(p)</code>方法解除节点链接，最后返回 item。<code>unlink(p)</code>是移除节点的主方法，逻辑较为复杂，后面我们单独分析。</li>
+</ol>
+<h4 id="unlink-Node-x"><a href="#unlink-Node-x" class="headerlink" title="unlink(Node x)"></a>unlink(Node<e> x)</e></h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Unlinks non-null node x.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">void unlink(Node&lt;E&gt; x) &#123;</span><br><span class="line">    <span class="comment">// assert x != null;</span></span><br><span class="line">    <span class="comment">// assert x.item == null;</span></span><br><span class="line">    <span class="comment">// assert x != PREV_TERMINATOR;</span></span><br><span class="line">    <span class="comment">// assert x != NEXT_TERMINATOR;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> Node&lt;E&gt; prev = x.prev;</span><br><span class="line">    <span class="keyword">final</span> Node&lt;E&gt; next = x.next;</span><br><span class="line">    <span class="keyword">if</span> (prev == <span class="literal">null</span>) &#123;<span class="comment">//操作节点为first节点</span></span><br><span class="line">        unlinkFirst(x, next);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (next == <span class="literal">null</span>) &#123;<span class="comment">//操作节点为last节点</span></span><br><span class="line">        unlinkLast(x, prev);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;<span class="comment">// common case</span></span><br><span class="line">        Node&lt;E&gt; activePred, activeSucc;</span><br><span class="line">        boolean isFirst, isLast;</span><br><span class="line">        int hops = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Find active predecessor</span></span><br><span class="line">        <span class="comment">//从被操作节点的prev节点开始找到前继活动节点</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; p = prev; ; ++hops) &#123;          </span><br><span class="line">            <span class="keyword">if</span> (p.item != <span class="literal">null</span>) &#123;</span><br><span class="line">                activePred = p;</span><br><span class="line">                isFirst = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            Node&lt;E&gt; q = p.prev;</span><br><span class="line">            <span class="keyword">if</span> (q == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (p.next == p)</span><br><span class="line">                    <span class="keyword">return</span>;<span class="comment">//自链接节点</span></span><br><span class="line">                activePred = p;</span><br><span class="line">                isFirst = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == q)<span class="comment">//自链接节点</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                p = q;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Find active successor</span></span><br><span class="line">        <span class="keyword">for</span> (Node&lt;E&gt; p = next; ; ++hops) &#123;          </span><br><span class="line">            <span class="keyword">if</span> (p.item != <span class="literal">null</span>) &#123;</span><br><span class="line">                activeSucc = p;</span><br><span class="line">                isLast = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            Node&lt;E&gt; q = p.next;</span><br><span class="line">            <span class="keyword">if</span> (q == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (p.prev == p)</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                activeSucc = p;</span><br><span class="line">                isLast = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (p == q)<span class="comment">//自链接节点</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                p = q;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> better HOP heuristics</span></span><br><span class="line">        <span class="comment">//无节点跳跃并且操作节点有first或last节点时不更新链表</span></span><br><span class="line">        <span class="keyword">if</span> (hops &lt; HOPS</span><br><span class="line">            <span class="comment">// always squeeze out interior deleted nodes</span></span><br><span class="line">            &amp;&amp; (isFirst | isLast))          </span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Squeeze out deleted nodes between activePred and</span></span><br><span class="line">        <span class="comment">// activeSucc, including x.</span></span><br><span class="line">        <span class="comment">//连接两个活动节点</span></span><br><span class="line">        skipDeletedSuccessors(activePred);            </span><br><span class="line">        skipDeletedPredecessors(activeSucc);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Try to gc-unlink, if possible</span></span><br><span class="line">        <span class="keyword">if</span> ((isFirst | isLast) &amp;&amp;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Recheck expected state of predecessor and successor</span></span><br><span class="line">            (activePred.next == activeSucc) &amp;&amp;</span><br><span class="line">            (activeSucc.prev == activePred) &amp;&amp;</span><br><span class="line">            (isFirst ? activePred.prev == <span class="literal">null</span> : activePred.item != <span class="literal">null</span>) &amp;&amp;</span><br><span class="line">            (isLast  ? activeSucc.next == <span class="literal">null</span> : activeSucc.item != <span class="literal">null</span>)) &#123;          </span><br><span class="line"></span><br><span class="line">            updateHead(); <span class="comment">// Ensure x is not reachable from head</span></span><br><span class="line">            updateTail(); <span class="comment">// Ensure x is not reachable from tail</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">// Finally, actually gc-unlink</span></span><br><span class="line">            x.lazySetPrev(isFirst ? prevTerminator() : x);</span><br><span class="line">            x.lazySetNext(isLast  ? nextTerminator() : x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong>：<code>unlink(Node x)</code>方法用于解除已弹出节点的链接，分三种情况：</p>
+<ol>
+<li>首先说一下通常的情况（源码中标注 <code>common case</code> 处），这种情况下，入列和出列非同端操作，即操作节点 x 非 first 和 last 节点， 就执行如下流程：</li>
+</ol>
+<ul>
+<li>首先找到给定节点 x 的活跃（active）前继和后继节点。然后修整它们之间的链接，让它们指向对方（通过<code>skipDeletedSuccessors</code>和<code>skipDeletedPredecessors</code>方法），留下一个从活跃(active)节点不可达的 x 节点（<strong>即“unlinking”</strong>）。</li>
+<li>如果成功执行，或者 x 节点没有 live 的前继/后继节点，再尝试 gc 解除链接(gc-unlink)，在设置 x 节点的 prev/next 指向它们自己或 TERMINATOR 之前（<strong>即“gc-unlink”</strong>），需要检查 x 的前继和后继节点的状态未被改变，并保证 x 节点从 head/tail 不可达（通过<code>updateHead()</code>和<code>updateTail()</code>方法）。</li>
+</ul>
+<ol>
+<li>如果操作节点为 first 节点（入列和出列都发生在 first 端），则调用<code>unlinkFirst</code>解除已删除节点的链接，并链接 first 节点到下一个 active 节点（注意，在执行完此方法之后 first 节点是没有改变的）。<code>unlinkFirst</code>源码如下：</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Unlinks non-null first node.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">unlinkFirst</span>(<span class="params">Node&lt;E&gt; first, Node&lt;E&gt; next</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// assert first != null;</span></span><br><span class="line">    <span class="comment">// assert next != null;</span></span><br><span class="line">    <span class="comment">// assert first.item == null;</span></span><br><span class="line">    <span class="comment">//从next节点开始向后寻找有效节点，o：已删除节点(item为null)</span></span><br><span class="line">    <span class="keyword">for</span> (Node&lt;E&gt; o = <span class="literal">null</span>, p = next, q;;) &#123;</span><br><span class="line">        <span class="keyword">if</span> (p.item != <span class="literal">null</span> || (q = p.next) == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">//跳过已删除节点，CAS替换first的next节点为一个active节点p</span></span><br><span class="line">            <span class="keyword">if</span> (o != <span class="literal">null</span> &amp;&amp; p.prev != p &amp;&amp; first.casNext(next, p)) &#123;</span><br><span class="line">                <span class="comment">//更新p的prev节点</span></span><br><span class="line">                skipDeletedPredecessors(p);</span><br><span class="line">                <span class="keyword">if</span> (first.prev == <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                    (p.next == <span class="literal">null</span> || p.item != <span class="literal">null</span>) &amp;&amp;</span><br><span class="line">                    p.prev == first) &#123;</span><br><span class="line">                    <span class="comment">//更新head节点，确保已删除节点o从head不可达(unlinking)</span></span><br><span class="line">                    updateHead(); <span class="comment">// Ensure o is not reachable from head</span></span><br><span class="line">                    <span class="comment">//更新tail节点，确保已删除节点o从tail不可达(unlinking)</span></span><br><span class="line">                    updateTail(); <span class="comment">// Ensure o is not reachable from tail</span></span><br><span class="line"></span><br><span class="line">                    <span class="comment">// Finally, actually gc-unlink</span></span><br><span class="line">                    <span class="comment">//使unlinking节点next指向自身</span></span><br><span class="line">                    o.lazySetNext(o);</span><br><span class="line">                    <span class="comment">//设置移除节点的prev为PREV_TERMINATOR</span></span><br><span class="line">                    o.lazySetPrev(prevTerminator());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p == q)<span class="comment">//自链接节点</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            o = p;</span><br><span class="line">            p = q;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果操作节点为 last 节点（入列和出列都发生在 last 端），则调用<code>unlinkLast</code>解除已删除节点的链接，并链接 last 节点到上一个 active 节点。<code>unlinkLast</code>与<code>unlinkFirst</code>方法执行流程一致，只是操作的是 last 端，在此不多赘述。</li>
+</ol>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本章与 ConcurrentLinkedQueue 一篇中的非阻塞算法基本一致，只是为双端操作定义了几个可供操作的节点类型。<br>本章重点：<strong>理解 ConcurrentLinkedDeque 的非阻塞算法及节点删除的三个状态</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>   
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/">JUC源码分析-集合篇(五):ConcurrentLinkedDeque</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
+  <p><span>发布时间:</span>2020年05月06日 - 14:05</p>
+  <p><span>最后更新:</span>2020年05月12日 - 19:05</p>
+  <p><span>原始链接:</span><a href="/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/" title="JUC源码分析-集合篇(五):ConcurrentLinkedDeque">https://www.vazh.cn/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+	  $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	    });
+    });  
+</script>
+
+
+
+      
+    </div> 
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="zkstyle WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="zkstyle Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JUC/" rel="tag"><i class="fa fa-tag"></i> JUC</a>
+          
+            <a href="/tags/ConcurrentLinkedDeque/" rel="tag"><i class="fa fa-tag"></i> ConcurrentLinkedDeque</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/04/JUC源码分析-集合篇（四）：ConcurrentLinkedQueue/" rel="next" title="JUC源码分析-集合篇（四）：ConcurrentLinkedQueue">
+                <i class="fa fa-chevron-left"></i> JUC源码分析-集合篇（四）：ConcurrentLinkedQueue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/12/聚合支付小结/" rel="prev" title="聚合支付小结">
+                聚合支付小结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="gitalk-container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/zhihu02.jpg" alt="zkstyle">
+          <p class="site-author-name" itemprop="name">zkstyle</p>
+           
+              <p class="site-description motion-element" itemprop="description">Stay hungry, stay foolish</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zkstyle" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://blog.csdn.net/zkhubu" target="_blank" title="csdn">
+                  
+                    <i class="fa fa-fw fa-crosshairs"></i>
+                  
+                    
+                      csdn
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/elvis03945040" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/huai-xiang-tian-kong-43/activities" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                    
+                      Zhihu
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://jm.taobao.org/" title="Aliyun" target="_blank">Aliyun</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://taobaofed.org/" title="taobao" target="_blank">taobao</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JUC源码分析-集合篇（五）：ConcurrentLinkedDeque"><span class="nav-number">1.</span> <span class="nav-text">JUC源码分析-集合篇（五）：ConcurrentLinkedDeque</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据结构"><span class="nav-number">3.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码解析"><span class="nav-number">4.</span> <span class="nav-text">源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加（入列）"><span class="nav-number">4.1.</span> <span class="nav-text">添加（入列）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linkFirst-E-linkLast-E"><span class="nav-number">4.1.1.</span> <span class="nav-text">linkFirst(E) / linkLast(E)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取-出列"><span class="nav-number">4.2.</span> <span class="nav-text">获取(出列)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pollFirst"><span class="nav-number">4.2.1.</span> <span class="nav-text">pollFirst()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#unlink-Node-x"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">unlink(Node x)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zkstyle</span>
+</div>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站总访问量:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  本站访问人数:<span id="busuanzi_value_site_uv"></span>
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共101.8k字</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '65fb17091a3360a3aff4',
+          clientSecret: 'f0f4c5399cefc5ebf492861a6e38dfa920467e12',
+          repo: 'zkstyle.github.io',
+          owner: 'zkstyle',
+          admin: ['zkstyle'],
+           id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1v0r5nCOvGl95iNsXltgjapB-gzGzoHsz", "rdy0TDJXds7aMJ3YrdrBqBeE");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

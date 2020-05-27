@@ -135,7 +135,7 @@
 <meta property="og:image" content="https://www.vazh.cn/picture/aqs01.jpg">
 <meta property="og:image" content="https://www.vazh.cn/picture/aqs02.jpg">
 <meta property="og:image" content="https://www.vazh.cn/picture/aqs03.jpg">
-<meta property="og:updated_time" content="2019-09-04T02:51:52.796Z">
+<meta property="og:updated_time" content="2020-04-23T11:21:30.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JUC源码分析之AQS">
 <meta name="twitter:description" content="AQS概述 AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug Lea）期望它能够成为实现大部分同步需求的基础。它是JUC并发包中的核心基础组件。 AQS解决了子实现同步器时涉及当的大量细节问题，例如获取同步">
@@ -496,7 +496,7 @@
 </blockquote>
 <p>AQS支持<strong>独占锁（Exclusive）和共享锁（Share）</strong>两种模式：</p>
 <ul>
-<li>独占锁：只能被一个线程获取到(<code>ReentrantLock</code>)；</li>
+<li>独占锁：只能被一个线程获取到(<code>ReentrantLock</code>)； </li>
 <li>共享锁：可以被多个线程同时获取(<code>CountDownLatch</code>、<code>ReadWriteLock</code>的读锁)。</li>
 </ul>
 <p>不管是独占锁还是共享锁，本质上都是对AQS内部的一个变量state的获取，state是一个原子性的int变量，可用来表示锁状态、资源数等，如下图。</p>
@@ -657,7 +657,7 @@
   <p><span>本文标题:</span><a href="/2019/07/06/JUC源码分析之AQS/">JUC源码分析之AQS</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2019年07月06日 - 15:07</p>
-  <p><span>最后更新:</span>2019年09月04日 - 10:09</p>
+  <p><span>最后更新:</span>2020年04月23日 - 19:04</p>
   <p><span>原始链接:</span><a href="/2019/07/06/JUC源码分析之AQS/" title="JUC源码分析之AQS">https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2019/07/06/JUC源码分析之AQS/" aria-label="复制成功！"></i></span>
   </p>
@@ -842,7 +842,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-count">83</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -853,7 +853,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -864,7 +864,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">54</span>
+                <span class="site-state-item-count">65</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1014,7 +1014,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共69.1k字</span>
+  <span class="post-count">博客全站共101.8k字</span>
 </div>
 
 

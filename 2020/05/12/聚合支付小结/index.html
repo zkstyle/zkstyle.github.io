@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "456d7aa2"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="支付,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Elvis's Blogs" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta name="keywords" content="支付">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚合支付小结">
+<meta property="og:url" content="https://www.vazh.cn/2020/05/12/聚合支付小结/index.html">
+<meta property="og:site_name" content="Elvis&#39;s Blogs">
+<meta property="og:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.vazh.cn/picture/package.png">
+<meta property="og:updated_time" content="2020-05-16T23:55:39.792Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聚合支付小结">
+<meta name="twitter:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta name="twitter:image" content="https://www.vazh.cn/picture/package.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.vazh.cn/2020/05/12/聚合支付小结/">
+
+
+
+
+
+  <title>聚合支付小结 | Elvis's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <a href="https://github.com/zkstyle" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Elvis's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">研一狗的日常</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.vazh.cn/2020/05/12/聚合支付小结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zkstyle">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/zhihu02.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Elvis's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">聚合支付小结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-12T19:38:50+08:00">
+                2020-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/项目/" itemprop="url" rel="index">
+                    <span itemprop="name">项目</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/05/12/聚合支付小结/" class="leancloud_visitors" data-flag-title="聚合支付小结">    
+	       | &nbsp;
+               <span class="post-meta-divider"></span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+		 <span>℃ </span>
+             </span>
+          
+
+          
+
+          
+	    <br>
+            <div class="post-wordcount">
+              
+		&nbsp;
+                
+		
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  4,604 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  ≈22 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="聚合支付平台设计"><a href="#聚合支付平台设计" class="headerlink" title="聚合支付平台设计"></a>聚合支付平台设计</h1><h2 id="api接口设计"><a href="#api接口设计" class="headerlink" title="api接口设计"></a>api接口设计</h2><ol>
+<li><p>创建支付令牌接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建支付令牌</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/createPayToken"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(@Validated PayCreatePayTokenDto payCreatePayTokenDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询交易信息接口</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">yMentTransacTokenService &#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> GenerateToken generateToken;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(PayCreatePayTokenDto payCreatePayTokenDto)</span> </span>&#123;</span><br><span class="line">		String orderId = payCreatePayTokenDto.getOrpublic <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建支付令牌</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/createPayToken"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(@Validated PayCreatePayTokenDto payCreatePayTokenDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询所有支付渠道接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PaymentChannelService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询所有支付渠道</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/selectAll"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;PaymentChannelDTO&gt; <span class="title">selectAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>策略上下文接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayContextService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/toPayHtml"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">toPayHtml</span><span class="params">(@RequestParam(<span class="string">"channelId"</span>)</span> String channelId,</span></span><br><span class="line"><span class="function">                                              @<span class="title">RequestParam</span><span class="params">(<span class="string">"payToken"</span>)</span> String payToken)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="聚合支付服务实现"><a href="#聚合支付服务实现" class="headerlink" title="聚合支付服务实现"></a>聚合支付服务实现</h2><h3 id="包结构"><a href="#包结构" class="headerlink" title="包结构"></a>包结构</h3><p><img src="/picture/package.png" alt=""></p>
+<h4 id="service-impl包"><a href="#service-impl包" class="headerlink" title="service.impl包"></a>service.impl包</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayMentTransacTokenServiceImpl</span> <span class="keyword">extends</span> <span class="title">BaseApiService</span>&lt;<span class="title">JSONObject</span>&gt; <span class="keyword">implements</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> GenerateToken generateToken;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(PayCreatePayTokenDto payCreatePayTokenDto)</span> </span>&#123;</span><br><span class="line">		String orderId = payCreatePayTokenDto.getOrderId();</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isEmpty(orderId)) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"订单号码不能为空!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		Long payAmount = payCreatePayTokenDto.getPayAmount();</span><br><span class="line">		<span class="keyword">if</span> (payAmount == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"金额不能为空!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		Long userId = payCreatePayTokenDto.getUserId();</span><br><span class="line">		<span class="keyword">if</span> (userId == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"userId不能为空!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.将输入插入数据库中 待支付记录</span></span><br><span class="line">		PaymentTransactionEntity paymentTransactionEntity = <span class="keyword">new</span> PaymentTransactionEntity();</span><br><span class="line">		paymentTransactionEntity.setOrderId(orderId);</span><br><span class="line">		paymentTransactionEntity.setPayAmount(payAmount);</span><br><span class="line">		paymentTransactionEntity.setUserId(userId);</span><br><span class="line">		<span class="comment">// 使用雪花算法 生成全局id</span></span><br><span class="line">		paymentTransactionEntity.setPaymentId(SnowflakeIdUtils.nextId());</span><br><span class="line">		<span class="keyword">int</span> result = paymentTransactionMapper.insertPaymentTransaction(paymentTransactionEntity);</span><br><span class="line">		<span class="keyword">if</span> (!toDaoResult(result)) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"系统错误!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 获取主键id</span></span><br><span class="line">		Long payId = paymentTransactionEntity.getId();</span><br><span class="line">		<span class="keyword">if</span> (payId == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"系统错误!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 3.生成对应支付令牌</span></span><br><span class="line">		String keyPrefix = <span class="string">"pay_"</span>;</span><br><span class="line">		String token = generateToken.createToken(keyPrefix, payId + <span class="string">""</span>);</span><br><span class="line">		JSONObject dataResult = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		dataResult.put(<span class="string">"token"</span>, token);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> setResultSuccess(dataResult);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>PayMentTransacTokenServiceImpl类是PayMentTransacTokenService的实现类，主要用于创建交易订单的支付token生成, 首先对payCreatePayTokenDto进行参数验证，然后设置PaymentTransactionEntity属性值插入数据库，插入预支付记录，数据库中有payment_status标记支付状态，0代表预支付,1代表已支付,使用雪花算法生成全局id . 插入成功后对插入记录判断是否插入成功以及获取id判断雪花生成id是否成功。最后利用工具类创建支付令牌，generateToken对象创建token,然后将token存放在json中返回。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayMentTransacInfoServiceImpl</span> <span class="keyword">extends</span> <span class="title">BaseApiService</span>&lt;<span class="title">PayMentTransacDTO</span>&gt;</span></span><br><span class="line"><span class="class">		<span class="keyword">implements</span> <span class="title">PayMentTransacInfoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> GenerateToken generateToken;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;PayMentTransacDTO&gt; <span class="title">tokenByPayMentTransac</span><span class="params">(String token)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 1.验证token是否为空</span></span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isEmpty(token)) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"token参数不能空!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.使用token查询redisPayMentTransacID</span></span><br><span class="line">		String value = generateToken.getToken(token);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.isEmpty(value)) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"该Token可能已经失效或者已经过期"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 3.转换为整数类型</span></span><br><span class="line">		Long transactionId = Long.parseLong(value);</span><br><span class="line">		<span class="comment">// 4.使用transactionId查询支付信息</span></span><br><span class="line">		PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(transactionId);</span><br><span class="line">		<span class="keyword">if</span> (paymentTransaction == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"未查询到该支付信息"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> setResultSuccess(ElvisBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询交易信息实现类　通过token查询交易订单号　查询交易信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PaymentChannelServiceImpl</span> <span class="keyword">extends</span> <span class="title">BaseApiService</span>&lt;<span class="title">List</span>&lt;<span class="title">PaymentChannelDTO</span>&gt;&gt;</span></span><br><span class="line"><span class="class">		<span class="keyword">implements</span> <span class="title">PaymentChannelService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentChannelMapper paymentChannelMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;PaymentChannelDTO&gt; <span class="title">selectAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		List&lt;PaymentChannelEntity&gt; paymentChanneList = paymentChannelMapper.selectAll();</span><br><span class="line">		<span class="keyword">return</span> MapperUtils.mapAsList(paymentChanneList, PaymentChannelDTO.class);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询所有渠道信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayContextServiceImpl</span> <span class="keyword">extends</span> <span class="title">BaseApiService</span>&lt;<span class="title">JSONObject</span>&gt; <span class="keyword">implements</span> <span class="title">PayContextService</span> </span>&#123;</span><br><span class="line">	<span class="comment">//根据channelId查询classAddres(反射全类名)</span></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentChannelMapper paymentChannelMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PayMentTransacInfoService payMentTransacInfoService;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">toPayHtml</span><span class="params">(String channelId, String payToken)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 1.使用渠道id获取渠道信息 classAddres</span></span><br><span class="line">		PaymentChannelEntity pymentChannel = paymentChannelMapper.selectBychannelId(channelId);</span><br><span class="line">		<span class="keyword">if</span> (pymentChannel == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(<span class="string">"没有查询到该渠道信息"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.使用payToken获取支付参数</span></span><br><span class="line">		BaseResponse&lt;PayMentTransacDTO&gt; tokenByPayMentTransac = payMentTransacInfoService</span><br><span class="line">				.tokenByPayMentTransac(payToken);</span><br><span class="line">		<span class="keyword">if</span> (!isSuccess(tokenByPayMentTransac)) &#123;</span><br><span class="line">			<span class="keyword">return</span> setResultError(tokenByPayMentTransac.getMsg());</span><br><span class="line">		&#125;</span><br><span class="line">		PayMentTransacDTO payMentTransacDTO = tokenByPayMentTransac.getData();</span><br><span class="line">		<span class="comment">// 3.执行具体的支付渠道的算法获取html表单数据 策略设计模式 使用java反射机制 执行具体方法</span></span><br><span class="line">		String classAddres = pymentChannel.getClassAddres();</span><br><span class="line">		PayStrategy payStrategy = StrategyFactory.getPayStrategy(classAddres);</span><br><span class="line">		String payHtml = payStrategy.toPayHtml(pymentChannel, payMentTransacDTO);</span><br><span class="line">		<span class="comment">// 4.直接返回html</span></span><br><span class="line">		JSONObject data = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		data.put(<span class="string">"payHtml"</span>, payHtml);</span><br><span class="line">		<span class="keyword">return</span> setResultSuccess(data);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基于策略模式返回不同html,传入渠道id与token,返回对应渠道的支付页面。首先根据渠道id查询对应渠道的全类名，通过token查询支付订单信息,通过全类名反射生成对象,由策略工厂生成,策略接口持有,不同的策略会有不同的实现,如支付宝策略,银联策略</p>
+<h4 id="包strategy-实现不同的渠道调用"><a href="#包strategy-实现不同的渠道调用" class="headerlink" title="包strategy 实现不同的渠道调用"></a>包strategy 实现不同的渠道调用</h4><p>首先是该包下的策略接口　不同的支付渠道有各自的实现策略　如支付宝、银联有具体的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayStrategy</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> paymentChannel</span></span><br><span class="line"><span class="comment">	 *            渠道参数</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> payMentTransacDTO</span></span><br><span class="line"><span class="comment">	 *            支付参数</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toPayHtml</span><span class="params">(PaymentChannelEntity paymentChannel, PayMentTransacDTO payMentTransacDTO)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以支付宝为例　下面是支付宝的具体策略实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AliPayStrategy</span> <span class="keyword">implements</span> <span class="title">PayStrategy</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toPayHtml</span><span class="params">(PaymentChannelEntity pymentChannel, PayMentTransacDTO payMentTransacDTO)</span> </span>&#123;</span><br><span class="line">		log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;支付宝参数封装开始&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 获得初始化的AlipayClient</span></span><br><span class="line">		AlipayClient alipayClient = <span class="keyword">new</span> DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id,</span><br><span class="line">				AlipayConfig.merchant_private_key, <span class="string">"json"</span>, AlipayConfig.charset, AlipayConfig.alipay_public_key,</span><br><span class="line">				AlipayConfig.sign_type);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 设置请求参数</span></span><br><span class="line">		AlipayTradePagePayRequest alipayRequest = <span class="keyword">new</span> AlipayTradePagePayRequest();</span><br><span class="line">		alipayRequest.setReturnUrl(AlipayConfig.return_url);</span><br><span class="line">		alipayRequest.setNotifyUrl(AlipayConfig.notify_url);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 商户订单号，商户网站订单系统中唯一订单号，必填</span></span><br><span class="line">		String outTradeNo = payMentTransacDTO.getPaymentId();</span><br><span class="line">		<span class="comment">// 付款金额，必填</span></span><br><span class="line">		String totalAmount = changeF2Y(payMentTransacDTO.getPayAmount() + <span class="string">""</span>);</span><br><span class="line">		<span class="comment">// 订单名称，必填</span></span><br><span class="line">		String subject = <span class="string">"珊珊幼儿园"</span>;</span><br><span class="line">		<span class="comment">// 商品描述，可空</span></span><br><span class="line">		String body = <span class="string">"珊珊课程服务"</span>;</span><br><span class="line"></span><br><span class="line">		alipayRequest.setBizContent(<span class="string">"&#123;\"out_trade_no\":\""</span> + outTradeNo + <span class="string">"\","</span> + <span class="string">"\"total_amount\":\""</span> + totalAmount</span><br><span class="line">				+ <span class="string">"\","</span> + <span class="string">"\"subject\":\""</span> + subject + <span class="string">"\","</span> + <span class="string">"\"body\":\""</span> + body + <span class="string">"\","</span></span><br><span class="line">				+ <span class="string">"\"product_code\":\"FAST_INSTANT_TRADE_PAY\"&#125;"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 请求</span></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String result = alipayClient.pageExecute(alipayRequest).getBody();</span><br><span class="line">			<span class="keyword">return</span> result;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** 金额为分的格式 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String CURRENCY_FEN_REGEX = <span class="string">"\\-?[0-9]+"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 将分为单位的转换为元 （除100）</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> amount</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">changeF2Y</span><span class="params">(String amount)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!amount.matches(CURRENCY_FEN_REGEX)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> BigDecimal.valueOf(Long.valueOf(amount)).divide(<span class="keyword">new</span> BigDecimal(<span class="number">100</span>)).toString();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>策略工厂类　格局全类名生产对应的对象 ConcurrentHashMap维护全类名与具体策略映射  ConcurrentHashMap保存的话后面可以不用每次都实例化　只需要一次实例化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StrategyFactory</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, PayStrategy&gt; strategyBean = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 思考几个点：</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> PayStrategy <span class="title">getPayStrategy</span><span class="params">(String classAddres)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (StringUtils.isEmpty(classAddres)) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			PayStrategy beanPayStrategy = strategyBean.get(classAddres);</span><br><span class="line">			<span class="keyword">if</span> (beanPayStrategy != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> beanPayStrategy;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 1.使用Java的反射机制初始化子类</span></span><br><span class="line">			Class&lt;?&gt; forName = Class.forName(classAddres);</span><br><span class="line">			<span class="comment">// 2.反射机制初始化对象</span></span><br><span class="line">			PayStrategy payStrategy = (PayStrategy) forName.newInstance();</span><br><span class="line">			strategyBean.put(classAddres, payStrategy);</span><br><span class="line">			<span class="keyword">return</span> payStrategy;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="callback包实现异步回调"><a href="#callback包实现异步回调" class="headerlink" title="callback包实现异步回调　"></a>callback包实现异步回调　</h4><p>下面两个包　</p>
+<p>![img]/picture/callback.png)</p>
+<p>首先异步回调采用模板方法进行重构代码　针对支付宝与银联进行公共代码抽取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPayCallbackTemplate</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> PaymentTransactionLogMapper paymentTransactionLogMapper;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ThreadPoolTaskExecutor threadPoolTaskExecutor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取所有请求的参数，封装成Map集合 并且验证是否被篡改</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> resp</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Map&lt;String, String&gt; <span class="title">verifySignature</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 异步回调执行业务逻辑</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> verifySignature</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">asyncService</span><span class="params">(Map&lt;String, String&gt; verifySignature)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">failResult</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">successResult</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * *1. 将报文数据存放到es &lt;br&gt;</span></span><br><span class="line"><span class="comment">     * 1. 验证报文参数&lt;br&gt;</span></span><br><span class="line"><span class="comment">     * 2. 将日志根据支付id存放到数据库中&lt;br&gt;</span></span><br><span class="line"><span class="comment">     * 3. 执行的异步回调业务逻辑&lt;br&gt;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">asyncCallBack</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证</span></span><br><span class="line">        Map&lt;String, String&gt; verifySignature = verifySignature(req, resp);</span><br><span class="line">        <span class="comment">// 2.将日志根据支付id存放到数据库中</span></span><br><span class="line">        String paymentId = verifySignature.get(<span class="string">"paymentId"</span>);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(paymentId)) &#123;</span><br><span class="line">            <span class="keyword">return</span> failResult();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 3.采用异步形式写入日志到数据库中</span></span><br><span class="line">        payLog(paymentId, verifySignature);</span><br><span class="line">        <span class="comment">//new Thread(new PayLogThread(paymentId,verifySignature)).start();</span></span><br><span class="line"></span><br><span class="line">        String result = verifySignature.get(PayConstant.RESULT_NAME);</span><br><span class="line">        <span class="comment">// 4.201报文验证签名失败</span></span><br><span class="line">        <span class="keyword">if</span> (result.equals(PayConstant.RESULT_PAYCODE_201)) &#123;</span><br><span class="line">            <span class="keyword">return</span> failResult();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 5.执行的异步回调业务逻辑</span></span><br><span class="line">        <span class="keyword">return</span> asyncService(verifySignature);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 采用多线程技术或者MQ形式进行存放到数据库中</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> paymentId</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> verifySignature</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">payLog</span><span class="params">(String paymentId, Map&lt;String, String&gt; verifySignature)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">"&gt;&gt;paymentId:&#123;paymentId&#125;,verifySignature:&#123;&#125;"</span>, verifySignature);</span><br><span class="line">        PaymentTransactionLogEntity paymentTransactionLog = <span class="keyword">new</span> PaymentTransactionLogEntity();</span><br><span class="line">        paymentTransactionLog.setTransactionId(paymentId);</span><br><span class="line">        paymentTransactionLog.setAsyncLog(verifySignature.toString());</span><br><span class="line">        paymentTransactionLogMapper.insertTransactionLog(paymentTransactionLog);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// A 1423 B 1234</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用多线程写入日志目的：加快响应 提高程序效率 使用线程池维护线程</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">PayLogThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String paymentId;</span><br><span class="line">        <span class="keyword">private</span> Map&lt;String, String&gt; verifySignature;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PayLogThread</span><span class="params">(String paymentId, Map&lt;String, String&gt; verifySignature)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.paymentId = paymentId;</span><br><span class="line">            <span class="keyword">this</span>.verifySignature = verifySignature;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;asyncCallBack service 02"</span>);</span><br><span class="line">            payLog(paymentId, verifySignature);</span><br><span class="line">            log.info(<span class="string">"&gt;&gt;&gt;&gt;&gt;asyncCallBack service 03"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>模板方法抽象异步回调逻辑　asyncCallBack方法组装异步回调逻辑　然后验签、异步回调通知延迟到子类实现</p>
+<p>写日志可以采用多线程或异步mq方式实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">addMQIntegral<span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnionPayCallbackTemplate</span> <span class="keyword">extends</span> <span class="title">AbstractPayCallbackTemplate</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> IntegralProducer integralProducer;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Map&lt;String, String&gt; <span class="title">verifySignature</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;</span><br><span class="line">		LogUtil.writeLog(<span class="string">"BackRcvResponse接收后台通知开始"</span>);</span><br><span class="line"></span><br><span class="line">		String encoding = req.getParameter(SDKConstants.param_encoding);</span><br><span class="line">		<span class="comment">// 获取银联通知服务器发送的后台通知参数</span></span><br><span class="line">		Map&lt;String, String&gt; reqParam = getAllRequestParam(req);</span><br><span class="line">		LogUtil.printRequestLog(reqParam);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 重要！验证签名前不要修改reqParam中的键值对的内容，否则会验签不过</span></span><br><span class="line">		<span class="keyword">if</span> (!AcpService.validate(reqParam, encoding)) &#123;</span><br><span class="line">			LogUtil.writeLog(<span class="string">"验证签名结果[失败]."</span>);</span><br><span class="line">			reqParam.put(PayConstant.RESULT_NAME, PayConstant.RESULT_PAYCODE_201);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			LogUtil.writeLog(<span class="string">"验证签名结果[成功]."</span>);</span><br><span class="line">			<span class="comment">// 【注：为了安全验签成功才应该写商户的成功处理逻辑】交易成功，更新商户订单状态</span></span><br><span class="line">			String orderId = reqParam.get(<span class="string">"orderId"</span>); <span class="comment">// 获取后台通知的数据，其他字段也可用类似方式获取</span></span><br><span class="line">			reqParam.put(<span class="string">"paymentId"</span>, orderId);</span><br><span class="line">			reqParam.put(PayConstant.RESULT_NAME, PayConstant.RESULT_PAYCODE_200);</span><br><span class="line">		&#125;</span><br><span class="line">		LogUtil.writeLog(<span class="string">"BackRcvResponse接收后台通知结束"</span>);</span><br><span class="line">		<span class="keyword">return</span> reqParam;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 异步回调中网络尝试延迟，导致异步回调重复执行 可能存在幂等性问题</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">asyncService</span><span class="params">(Map&lt;String, String&gt; verifySignature)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		String orderId = verifySignature.get(<span class="string">"orderId"</span>); <span class="comment">// 获取后台通知的数据，其他字段也可用类似方式获取</span></span><br><span class="line">		String respCode = verifySignature.get(<span class="string">"respCode"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。</span></span><br><span class="line">		System.out.println(<span class="string">"orderId:"</span> + orderId + <span class="string">",respCode:"</span> + respCode);</span><br><span class="line">		<span class="comment">// 1.判断respCode是否为已经支付成功断respCode=00、A6后，</span></span><br><span class="line">		<span class="keyword">if</span> (!(respCode.equals(<span class="string">"00"</span>) || respCode.equals(<span class="string">"A6"</span>))) &#123;</span><br><span class="line">			<span class="keyword">return</span> failResult();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 根据日志 手动补偿 使用支付id调用第三方支付接口查询</span></span><br><span class="line">		PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectByPaymentId(orderId);</span><br><span class="line">		<span class="keyword">if</span> (paymentTransaction.getPaymentStatus().equals(PayConstant.PAY_STATUS_SUCCESS)) &#123;</span><br><span class="line">			<span class="comment">// 网络重试中，之前已经支付过</span></span><br><span class="line">			<span class="keyword">return</span> successResult();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 2.将状态改为已经支付成功</span></span><br><span class="line">		paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + <span class="string">""</span>, orderId);</span><br><span class="line">		<span class="comment">// 3.调用积分服务接口增加积分(处理幂等性问题)　查询支付状态　如果支付成功　不用重试</span></span><br><span class="line">		addMQIntegral(paymentTransaction); <span class="comment">// 使用MQ</span></span><br><span class="line">		<span class="keyword">return</span> successResult();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 基于MQ增加积分</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@Async</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addMQIntegral</span><span class="params">(PaymentTransactionEntity paymentTransaction)</span> </span>&#123;</span><br><span class="line">		JSONObject jsonObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">		jsonObject.put(<span class="string">"paymentId"</span>, paymentTransaction.getPaymentId());</span><br><span class="line">		jsonObject.put(<span class="string">"userId"</span>, paymentTransaction.getUserId());</span><br><span class="line">		jsonObject.put(<span class="string">"integral"</span>, <span class="number">100</span>);</span><br><span class="line">		integralProducer.send(jsonObject);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">failResult</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> PayConstant.YINLIAN_RESULT_FAIL;</span><br><span class="line">	&#125;然一次性解决会有问题，那就分多次解决！简单的描</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">successResult</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> PayConstant.YINLIAN_RESULT_SUCCESS;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取请求参数中所有的信息 当商户上送frontUrl或backUrl地址中带有参数信息的时候，</span></span><br><span class="line"><span class="comment">	 * 这种方式会将url地址中的参数读到map中，会导多出来这些信息从而致验签失败，</span></span><br><span class="line"><span class="comment">	 * 这个时候可以自行修改过滤掉url中的参数或者使用getAllRequestParamStream方法。</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title">getAllRequestParam</span><span class="params">(<span class="keyword">final</span> HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">		Map&lt;String, String&gt; res = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">		Enumeration&lt;?&gt; temp = request.getParameterNames();</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">null</span> != temp) &#123;</span><br><span class="line">			<span class="keyword">while</span> (temp.hasMoreElements()) &#123;</span><br><span class="line">				String en = (String) temp.nextElement();</span><br><span class="line">				String value = request.getParameter(en);</span><br><span class="line">				res.put(en, value);</span><br><span class="line">				<span class="comment">// 在报文上送时，如果字段的值为空，则不上送&lt;下面的处理为在获取所有参数数据时，判断若值为空，则删除这个字段&gt;</span></span><br><span class="line">				<span class="keyword">if</span> (res.get(en) == <span class="keyword">null</span> || <span class="string">""</span>.equals(res.get(en))) &#123;</span><br><span class="line">					<span class="comment">// System.out.println("======为空的字段名===="+en);</span></span><br><span class="line">					res.remove(en);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> res;</span><br><span class="line">	&#125;</span><br><span class="line">  ｝</span><br></pre></td></tr></table></figure>
+<p>具体的银联异步回调模板　其中asyncService方法执行具体异步回调通知　首先获取上一步验签的结果　获取状态码　然后进行判断是否执行成功　若失败则返回失败结果　否则通过支付id查询支付状态　若支付成功　可能是网络重试　直接返回成功状态　避免反复重试造成积分等服务的幂等性问题　若支付状态没有修改　则修改支付状态为1 并异步mq增加积分并返回成功状态</p>
+<p>addMQIntegral方法调用积分服务　采用rabbitmq异步增加积分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AbstractPayCallbackTemplate <span class="title">getPayCallbackTemplate</span><span class="params">(String beanId)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> (AbstractPayCallbackTemplate) SpringContextUtil.getBean(beanId);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>模板工厂根据beanId获取对应的模板　</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayAsynCallbackService</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String UNIONPAYCALLBACK_TEMPLATE = <span class="string">"unionPayCallbackTemplate"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 银联异步回调接口执行代码</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> req</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> resp</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/unionPayAsynCallback"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">unionPayAsynCallback</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;</span><br><span class="line">		AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory</span><br><span class="line">				.getPayCallbackTemplate(UNIONPAYCALLBACK_TEMPLATE);</span><br><span class="line">		<span class="keyword">return</span> abstractPayCallbackTemplate.asyncCallBack(req, resp);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>PayAsynCallbackService执行异步回调逻辑　调用抽象模板组装业务逻辑的方法asyncCallBack　</p>
+<h3 id="整合积分服务"><a href="#整合积分服务" class="headerlink" title="整合积分服务"></a>整合积分服务</h3><ol>
+<li><p>积分投递成功查询与积分增加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IntegralMapper</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Insert</span>(<span class="string">"INSERT INTO `elvis_integral` VALUES (NULL, #&#123;userId&#125;, #&#123;paymentId&#125;,#&#123;integral&#125;, #&#123;availability&#125;, 0, null, now(), null, now());"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">insertIntegral</span><span class="params">(IntegralEntity integralEntity)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Select</span>(<span class="string">"SELECT  id as id ,USER_ID as userId, PAYMENT_ID as PAYMENTID ,INTEGRAL as INTEGRAL ,AVAILABILITY as AVAILABILITY  FROM elvis_integral where PAYMENT_ID=#&#123;paymentId&#125;  AND AVAILABILITY='1';"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> IntegralEntity <span class="title">findIntegral</span><span class="params">(String paymentId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>积分服务 消费者　监听积分队列　处理积分增加幂等性问题　先获取队列信息　首先获取paymentId　如果为空　则可能已经消费手动签收　再进行积分查询　看积分是否已经增加若增加　手动签收　再对userId,integral进行判空验证　最后将积分增加　支付订单+积分保证唯一　若数据库插入成功　手动签收</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegralConsumer</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> IntegralMapper integralMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@RabbitListener</span>(queues = <span class="string">"integral_queue"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Message message, @Headers Map&lt;String, Object&gt; headers, Channel channel)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String messageId = message.getMessageProperties().getMessageId();</span><br><span class="line">			String msg = <span class="keyword">new</span> String(message.getBody(), <span class="string">"UTF-8"</span>);</span><br><span class="line">			log.info(<span class="string">"&gt;&gt;&gt;messageId:&#123;&#125;,msg:&#123;&#125;"</span>, messageId, msg);</span><br><span class="line">			JSONObject jsonObject = JSONObject.parseObject(msg);</span><br><span class="line">			String paymentId = jsonObject.getString(<span class="string">"paymentId"</span>);</span><br><span class="line">			<span class="keyword">if</span> (StringUtils.isEmpty(paymentId)) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;支付id不能为空 paymentId:&#123;&#125;"</span>, paymentId);</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 使用paymentId查询是否已经增加过积分 网络重试间隔</span></span><br><span class="line">			IntegralEntity resultIntegralEntity = integralMapper.findIntegral(paymentId);</span><br><span class="line">			<span class="keyword">if</span> (resultIntegralEntity != <span class="keyword">null</span>) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;paymentId:&#123;&#125;已经增加过积分"</span>, paymentId);</span><br><span class="line">				<span class="comment">// 已经增加过积分，通知MQ不要在继续重试。</span></span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Integer userId = jsonObject.getInteger(<span class="string">"userId"</span>);</span><br><span class="line">			<span class="keyword">if</span> (userId == <span class="keyword">null</span>) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;paymentId:&#123;&#125;,对应的用户userId参数为空"</span>, paymentId);</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Long integral = jsonObject.getLong(<span class="string">"integral"</span>);</span><br><span class="line">			<span class="keyword">if</span> (integral == <span class="keyword">null</span>) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;paymentId:&#123;&#125;,对应的用户integral参数为空"</span>, integral);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			IntegralEntity integralEntity = <span class="keyword">new</span> IntegralEntity();</span><br><span class="line">			integralEntity.setPaymentId(paymentId);</span><br><span class="line">			integralEntity.setIntegral(integral);</span><br><span class="line">			integralEntity.setUserId(userId);</span><br><span class="line">			integralEntity.setAvailability(<span class="number">1</span>);</span><br><span class="line">			<span class="comment">// 插入到数据库中</span></span><br><span class="line">			<span class="keyword">int</span> insertIntegral = integralMapper.insertIntegral(integralEntity);</span><br><span class="line">			<span class="keyword">if</span> (insertIntegral &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="comment">// 手动签收消息,通知mq服务器端删除该消息</span></span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 采用重试机制</span></span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			log.error(<span class="string">"&gt;&gt;&gt;&gt;ERROR MSG:"</span>, e.getMessage());</span><br><span class="line">			basicNack(message, channel);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 消费者获取到消息之后 手动签收 通知MQ删除该消息</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">basicNack</span><span class="params">(Message message, Channel channel)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		channel.basicNack(message.getMessageProperties().getDeliveryTag(), <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 什么场景下 适合于重试 网络连接、空指针 参数错误</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>积分生产者　投递增加积分消息 采用重试+ack确认机制保证消息成功投递到mq</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegralProducer</span> <span class="keyword">implements</span> <span class="title">RabbitTemplate</span>.<span class="title">ConfirmCallback</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> RabbitTemplate rabbitTemplate;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String INTEGRAL_EXCHANGE_NAME = <span class="string">"integral_exchange_name"</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String INTEGRAL_ROUTINGKEY = <span class="string">"integralRoutingKey"</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="meta">@Transactional</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">(JSONObject jsonObject)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		String jsonString = jsonObject.toJSONString();</span><br><span class="line">		System.out.println(<span class="string">"jsonString:"</span> + jsonString);</span><br><span class="line">		String paymentId = jsonObject.getString(<span class="string">"paymentId"</span>);</span><br><span class="line">		<span class="comment">// 封装消息</span></span><br><span class="line">		Message message = MessageBuilder.withBody(jsonString.getBytes())</span><br><span class="line">				.setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding(<span class="string">"utf-8"</span>).setMessageId(paymentId)</span><br><span class="line">				.build();</span><br><span class="line">		<span class="comment">// 构建回调返回的数据（消息id）</span></span><br><span class="line">		<span class="keyword">this</span>.rabbitTemplate.setMandatory(<span class="keyword">true</span>);</span><br><span class="line">		<span class="keyword">this</span>.rabbitTemplate.setConfirmCallback(<span class="keyword">this</span>);</span><br><span class="line">		CorrelationData correlationData = <span class="keyword">new</span> CorrelationData(jsonString);</span><br><span class="line">		rabbitTemplate.convertAndSend(INTEGRAL_EXCHANGE_NAME, INTEGRAL_ROUTINGKEY, message, correlationData);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">confirm</span><span class="params">(CorrelationData correlationData, <span class="keyword">boolean</span> ack, String cause)</span> </span>&#123;</span><br><span class="line">		String jsonString = correlationData.getId();</span><br><span class="line">		System.out.println(<span class="string">"消息id:"</span> + correlationData.getId());</span><br><span class="line">		<span class="keyword">if</span> (ack) &#123;</span><br><span class="line">			log.info(<span class="string">"&gt;&gt;&gt;使用MQ消息确认机制确保消息一定要投递到MQ中成功"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		JSONObject jsonObject = JSONObject.parseObject(jsonString);</span><br><span class="line">		<span class="comment">// 生产者消息投递失败的话，采用递归重试机制</span></span><br><span class="line">		send(jsonObject);</span><br><span class="line">		log.info(<span class="string">"&gt;&gt;&gt;使用MQ消息确认机制投递到MQ中失败"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>积分补偿队列　解决在支付状态与积分增加之间存在的分布式任务问题　因为增加积分是异步的，若事务回滚，积分增加了支付状态还是待支付则出现不一致的分布式事务问题，所以进行补偿，若积分增加了则将支付状态改为已支付状态</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PayCheckStateConsumer</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 死信队列（备胎） 消息被拒绝、队列长度满了 定时任务 人工补偿</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">@RabbitListener</span>(queues = <span class="string">"integral_create_queue"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Message message, @Headers Map&lt;String, Object&gt; headers, Channel channel)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String messageId = message.getMessageProperties().getMessageId();</span><br><span class="line">			String msg = <span class="keyword">new</span> String(message.getBody(), <span class="string">"UTF-8"</span>);</span><br><span class="line">			log.info(<span class="string">"&gt;&gt;&gt;messageId:&#123;&#125;,msg:&#123;&#125;"</span>, messageId, msg);</span><br><span class="line">			JSONObject jsonObject = JSONObject.parseObject(msg);</span><br><span class="line">			String paymentId = jsonObject.getString(<span class="string">"paymentId"</span>);</span><br><span class="line">			<span class="keyword">if</span> (StringUtils.isEmpty(paymentId)) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;支付id不能为空 paymentId:&#123;&#125;"</span>, paymentId);</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 1.使用paymentId查询之前是否已经支付过</span></span><br><span class="line">			PaymentTransactionEntity paymentTransactionEntity = paymentTransactionMapper.selectByPaymentId(paymentId);</span><br><span class="line">			<span class="keyword">if</span> (paymentTransactionEntity == <span class="keyword">null</span>) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;支付id paymentId:&#123;&#125; 未查询到"</span>, paymentId);</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			Integer paymentStatus = paymentTransactionEntity.getPaymentStatus();</span><br><span class="line">			<span class="keyword">if</span> (paymentStatus.equals(PayConstant.PAY_STATUS_SUCCESS)) &#123;</span><br><span class="line">				log.error(<span class="string">"&gt;&gt;&gt;&gt;支付id paymentId:&#123;&#125; "</span>, paymentId);</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 安全起见 主动调用第三方接口查询</span></span><br><span class="line">			String paymentChannel = jsonObject.getString(<span class="string">"paymentChannel"</span>);</span><br><span class="line">			<span class="keyword">int</span> updatePaymentStatus = paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + <span class="string">""</span>,</span><br><span class="line">					paymentId, paymentChannel);</span><br><span class="line">			<span class="keyword">if</span> (updatePaymentStatus &gt; <span class="number">0</span>) &#123;</span><br><span class="line">				basicNack(message, channel);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 继续重试</span></span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">			basicNack(message, channel);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">basicNack</span><span class="params">(Message message, Channel channel)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		channel.basicNack(message.getMessageProperties().getDeliveryTag(), <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>   
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/05/12/聚合支付小结/">聚合支付小结</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
+  <p><span>发布时间:</span>2020年05月12日 - 19:05</p>
+  <p><span>最后更新:</span>2020年05月17日 - 07:05</p>
+  <p><span>原始链接:</span><a href="/2020/05/12/聚合支付小结/" title="聚合支付小结">https://www.vazh.cn/2020/05/12/聚合支付小结/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2020/05/12/聚合支付小结/" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+	  $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	    });
+    });  
+</script>
+
+
+
+      
+    </div> 
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>赞赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="zkstyle WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="zkstyle Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/支付/" rel="tag"><i class="fa fa-tag"></i> 支付</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/06/JUC源码分析-集合篇-五-ConcurrentLinkedDeque/" rel="next" title="JUC源码分析-集合篇(五):ConcurrentLinkedDeque">
+                <i class="fa fa-chevron-left"></i> JUC源码分析-集合篇(五):ConcurrentLinkedDeque
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/12/秒杀设计小结/" rel="prev" title="秒杀设计小结">
+                秒杀设计小结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="gitalk-container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/zhihu02.jpg" alt="zkstyle">
+          <p class="site-author-name" itemprop="name">zkstyle</p>
+           
+              <p class="site-description motion-element" itemprop="description">Stay hungry, stay foolish</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zkstyle" target="_blank" title="Github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      Github
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://blog.csdn.net/zkhubu" target="_blank" title="csdn">
+                  
+                    <i class="fa fa-fw fa-crosshairs"></i>
+                  
+                    
+                      csdn
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/elvis03945040" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                    
+                      Twitter
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/huai-xiang-tian-kong-43/activities" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                    
+                      Zhihu
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://jm.taobao.org/" title="Aliyun" target="_blank">Aliyun</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://taobaofed.org/" title="taobao" target="_blank">taobao</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#聚合支付平台设计"><span class="nav-number">1.</span> <span class="nav-text">聚合支付平台设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#api接口设计"><span class="nav-number">1.1.</span> <span class="nav-text">api接口设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合支付服务实现"><span class="nav-number">1.2.</span> <span class="nav-text">聚合支付服务实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包结构"><span class="nav-number">1.2.1.</span> <span class="nav-text">包结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#service-impl包"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">service.impl包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包strategy-实现不同的渠道调用"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">包strategy 实现不同的渠道调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#callback包实现异步回调"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">callback包实现异步回调　</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整合积分服务"><span class="nav-number">1.2.2.</span> <span class="nav-text">整合积分服务</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zkstyle</span>
+</div>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站总访问量:<span id="busuanzi_value_site_pv"></span>
+</span>
+</div>
+
+  本站访问人数:<span id="busuanzi_value_site_uv"></span>
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共101.8k字</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '65fb17091a3360a3aff4',
+          clientSecret: 'f0f4c5399cefc5ebf492861a6e38dfa920467e12',
+          repo: 'zkstyle.github.io',
+          owner: 'zkstyle',
+          admin: ['zkstyle'],
+           id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("1v0r5nCOvGl95iNsXltgjapB-gzGzoHsz", "rdy0TDJXds7aMJ3YrdrBqBeE");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
