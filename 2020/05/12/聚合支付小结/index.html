@@ -122,19 +122,19 @@
 
 
 
-<meta name="description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta name="description" content="聚合支付平台设计api接口设计 创建支付令牌接口 1234567public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToken(@Validated PayC">
 <meta name="keywords" content="支付">
 <meta property="og:type" content="article">
 <meta property="og:title" content="聚合支付小结">
 <meta property="og:url" content="https://www.vazh.cn/2020/05/12/聚合支付小结/index.html">
 <meta property="og:site_name" content="Elvis&#39;s Blogs">
-<meta property="og:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta property="og:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 1234567public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToken(@Validated PayC">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.vazh.cn/picture/package.png">
-<meta property="og:updated_time" content="2020-05-16T23:55:39.792Z">
+<meta property="og:updated_time" content="2020-07-15T04:38:03.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聚合支付小结">
-<meta name="twitter:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 123456789public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 * 	 * @return	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToke">
+<meta name="twitter:description" content="聚合支付平台设计api接口设计 创建支付令牌接口 1234567public interface PayMentTransacTokenService &amp;#123;	/**	 * 创建支付令牌	 */	@GetMapping(&quot;/createPayToken&quot;)	public BaseResponse&amp;lt;JSONObject&amp;gt; createPayToken(@Validated PayC">
 <meta name="twitter:image" content="https://www.vazh.cn/picture/package.png">
 
 
@@ -447,7 +447,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  4,604 字
+                  4,559 字
                 </span>
               
 
@@ -486,14 +486,18 @@
       
         <h1 id="聚合支付平台设计"><a href="#聚合支付平台设计" class="headerlink" title="聚合支付平台设计"></a>聚合支付平台设计</h1><h2 id="api接口设计"><a href="#api接口设计" class="headerlink" title="api接口设计"></a>api接口设计</h2><ol>
 <li><p>创建支付令牌接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建支付令牌</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/createPayToken"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(@Validated PayCreatePayTokenDto payCreatePayTokenDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建支付令牌</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/createPayToken"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(@Validated PayCreatePayTokenDto payCreatePayTokenDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查询交易信息接口</p>
-   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">yMentTransacTokenService &#123;</span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> PaymentTransactionMapper paymentTransactionMapper;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> GenerateToken generateToken;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(PayCreatePayTokenDto payCreatePayTokenDto)</span> </span>&#123;</span><br><span class="line">		String orderId = payCreatePayTokenDto.getOrpublic <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacTokenService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建支付令牌</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/createPayToken"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">createPayToken</span><span class="params">(@Validated PayCreatePayTokenDto payCreatePayTokenDto)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayMentTransacInfoService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/tokenByPayMentTransac"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> BaseResponse&lt;PayMentTransacDTO&gt; <span class="title">tokenByPayMentTransac</span><span class="params">(@RequestParam(<span class="string">"token"</span>)</span> String token)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<ol start="3">
 <li><p>查询所有支付渠道接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PaymentChannelService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询所有支付渠道</span></span><br><span class="line"><span class="comment">	 * </span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/selectAll"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;PaymentChannelDTO&gt; <span class="title">selectAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PaymentChannelService</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 查询所有支付渠道</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@GetMapping</span>(<span class="string">"/selectAll"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;PaymentChannelDTO&gt; <span class="title">selectAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<ol start="4">
 <li><p>策略上下文接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PayContextService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/toPayHtml"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> BaseResponse&lt;JSONObject&gt; <span class="title">toPayHtml</span><span class="params">(@RequestParam(<span class="string">"channelId"</span>)</span> String channelId,</span></span><br><span class="line"><span class="function">                                              @<span class="title">RequestParam</span><span class="params">(<span class="string">"payToken"</span>)</span> String payToken)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -573,7 +577,7 @@
   <p><span>本文标题:</span><a href="/2020/05/12/聚合支付小结/">聚合支付小结</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 zkstyle 的个人博客">zkstyle</a></p>
   <p><span>发布时间:</span>2020年05月12日 - 19:05</p>
-  <p><span>最后更新:</span>2020年05月17日 - 07:05</p>
+  <p><span>最后更新:</span>2020年07月15日 - 12:07</p>
   <p><span>原始链接:</span><a href="/2020/05/12/聚合支付小结/" title="聚合支付小结">https://www.vazh.cn/2020/05/12/聚合支付小结/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://www.vazh.cn/2020/05/12/聚合支付小结/" aria-label="复制成功！"></i></span>
   </p>
@@ -756,7 +760,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-count">84</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -778,7 +782,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-count">67</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -928,7 +932,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共101.8k字</span>
+  <span class="post-count">博客全站共103.0k字</span>
 </div>
 
 
